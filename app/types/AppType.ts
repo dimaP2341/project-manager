@@ -19,6 +19,21 @@ export type DropDownPositions = {
   left: number
 }
 
+type SortingOption = {
+  category: string
+  options: {
+    label: string
+    value: string
+    selected: boolean
+  }
+}
+
+type SortingDropDownPosition = {
+  left: number
+  top: number
+  width?: number
+}
+
 export type AppType = {
   openSideBarObject: {
     openSideBar: boolean
@@ -73,5 +88,20 @@ export type AppType = {
   openConfirmationWindowObject: {
     openConfirmationWindow: boolean
     setOpenConfirmWindow: Dispatch<SetStateAction<boolean>>
+  }
+
+  sortingOptionObject: {
+    sortingOptions: SortingOption[]
+    setSortingOptions: Dispatch<SetStateAction<SortingOption[]>>
+  }
+
+openSortingDropDownObject: {
+  openSortingDropDown: boolean
+  setOpenSortingDropDown: Dispatch<SetStateAction<boolean>>
+}
+
+  sortingDropDownPositionsObject: {
+    sortingDropDownPositions: SortingDropDownPosition
+    setSortingDropDownPositions: Dispatch<SetStateAction<SortingDropDownPosition>>
   }
 }

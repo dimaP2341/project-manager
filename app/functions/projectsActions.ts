@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Project } from '../Data/AllProjects'
 import { IconData } from '../Types/AppType'
 import { v4 as uuidv4 } from 'uuid'
+import { FormData } from '../Components/Windows/ProjectWindow'
 
 export function addNewProject(
   data: FormData,
@@ -34,5 +35,27 @@ export function deleteProject(selectedProject: Project | null, setSelectedProjec
     setAllProjects(updateAllProjects)
     setSelectedProject(null)
     setOpenProjectWindow(false)
+  }
+}
+
+export function editProject(selectedProject: Project | null, setSelectedProject: Dispatch<SetStateAction<Project | null>>, data: FormData, selectedIcon: IconData | null, allProjects: Project[], setAllProjects: Dispatch<SetStateAction<Project[]>>, setOpenConfirmationWindow: Dispatch<SetStateAction<boolean>>) {
+  if (selectedProject) {
+    const updateProject: Project = {
+      ...selectedProject,
+      title: data.projectName,
+      icon: selectedIcon?.name || "LocalLibrary"
+    }
+
+    const updateAllProjects = allProjects.map((project) => {
+      if (project.id === selectedProject.id) {
+        return updateProject
+      }
+
+      return project
+    })
+
+    setAllProjects(updateAllProjects)
+    setSelectedProject(null)
+    setOpenConfirmationWindow(false)
   }
 }

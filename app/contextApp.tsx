@@ -13,6 +13,11 @@ const defaultState: AppType = {
   allIconsDataObject: { allIconsData: [], setAllIconsData: () => {} },
   openIconWindowObject: { openIconWindow: false, setOpenIconWindow: () => {} },
   selectedIconObject: { selectedIcon: null, setSelectedIcon: () => {} },
+  sortingOptionObject: {sortingOptions: [], setSortingOptions: () => {}}
+  sortingDropDownPositionObject: {
+    sortingDropDownPositions: {left: 0, top: 0},
+    setSortingDropDownPositions: () => {}
+  }
 }
 
 const ContextApp = createContext<AppType>(defaultState)
@@ -51,6 +56,29 @@ export default function ContextAppProvider({ children }: { children: React.React
 
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [openConfirmationWindow, setOpenConfirmWindow] = useState<boolean>(false)
+
+  const [sortingOptions, setSortingOptions] = useState([
+    {
+      category: "Order",
+      options: [
+        {label: "A-Z", value: "asc", selected: true},
+        {label: "Z-A", value: "desc", selected: false}
+      ],
+    },
+    {
+      category: "Date",
+      options: [
+        {label: "Newest", value: "newest", selected: false},
+        {label: "Oldest", value: "oldest", selected: false}
+      ]
+    }
+  ])
+
+  const [openSortingDropDown, setOpenSortingDropDown] = useState(false)
+  const [sortingDropDownPositions, setSortingDropDownPositions] = useState({
+    top: 0,
+    left: 0
+  })
 
   useEffect(() => {
     function handleResize() {
@@ -105,6 +133,9 @@ export default function ContextAppProvider({ children }: { children: React.React
         openDropDownObject: { openDropDown, setOpenDropDown },
         selectedProjectObject: { selectedProject, setSelectedProject },
         openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
+        sortingOptionObject: { sortingOptions, setSortingOptions},
+        openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown},
+        sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions}
       }}
     >
       {children}

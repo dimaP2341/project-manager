@@ -1,6 +1,6 @@
 import { useContextApp } from '@/app/contextApp'
 import { allIconsArray } from '@/app/Data/AllIcons'
-import { addNewProject } from '@/app/Functions/projectsActions'
+import { addNewProject, editProject } from '@/app/Functions/projectsActions'
 import AllProjects from '@/app/Pages/allProjects/AllProjects'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BorderAllOutlined from '@mui/icons-material/BorderAllOutlined'
@@ -18,14 +18,14 @@ const schema = z.object({
     .max(30, 'Project name must be 30 characters or less'),
 })
 
-type FormData = z.infer<typeof schema>
+export type FormData = z.infer<typeof schema>
 
 export default function ProjectWindow() {
   const {
     openProjectWindowObject: { openProjectWindow, setOpenProjectWindow },
     allProjectsObject: { allProjects, setAllProjects },
     selectedIconObject: { selectedIcon, setSelectedIcon },
-    selectedProjectObject: {selectedProject}
+    selectedProjectObject: {selectedProject, setSelectedProject}
   } = useContextApp()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -43,35 +43,40 @@ export default function ProjectWindow() {
   })
 
   const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
-    const existingProject = AllProjects.find(
+    const existingProject = allProjects.find(
       (project) => project.title.toLowerCase() === data.projectName.toLowerCase(),
     )
 
-    if (existingProject) {
+    if (existingProject && !selectedProject) {
       setError('projectName', {
         type: 'manual',
         message: 'Project already exists',
       })
 
       setFocus('projectName')
-    } else {
-      projectsFunction(data)
+      return
     }
   }
 
-  async function projectsFunction(data: FormData) {
+  projectsFunction()
+
+  async function projectsFunction() {
     try {
       setIsLoading(false)
 
       await new Promise((res) => setTimeout(res, 1000))
 
-      addNewProject(data, allProjects, setAllProjects, setOpenProjectWindow, selectedIcon, reset)
+      if (!selectedProject) {
+        addNewProject(data, allProjects, setAllProjects, setOpenProjectWindow, selectedIcon, reset)
+      } else {
+        editProject(selectedProject, setSelectedProject, data, selectedIcon, allProjects, setAllProjects, setOpenProjectWindow) 
+      }
     } catch (err) {
       console.log(err)
       toast.error("Something went wrong")
     } finally {
       setIsLoading(false)
-      toast.success("Project added successfully")
+      toast.success(`Project ${selectedProject ? "edited" : "added"} successfully`)
     }
   }
 
