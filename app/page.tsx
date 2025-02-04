@@ -1,12 +1,13 @@
 'use client'
 import { ReactElement, ReactNode } from 'react'
-import SideBar from './components/SideBar'
+import SideBar from './Components/SideBar'
 import { useContextApp } from './contextApp'
-import AllProjects from './pages/allProjects/AllProjects'
-import AllTasksContainer from './pages/allTasks/AllTasks'
-import ProjectWindow from './components/Windows/ProjectWindow'
-import MoreDropDown from './components/DropDowns/MoreDropDown'
-import ConfirmationWindow from './components/Windows/ConfirmationWindow'
+import AllProjects from './Pages/allProjects/AllProjects'
+import AllTasksContainer from './Pages/allTasks/AllTasks'
+import ProjectWindow from './Components/Windows/ProjectWindow'
+import MoreDropDown from './Components/DropDowns/MoreDropDown'
+import ConfirmationWindow from './Components/Windows/ConfirmationWindow'
+import { Toaster } from 'react-hot-toast'
 
 export default function Home() {
   const {
@@ -27,6 +28,7 @@ export default function Home() {
 
   return (
     <div className="flex w-full h-screen poppins">
+      <Toaster/>
       <ConfirmationWindow />
       <MoreDropDown />
       <ProjectWindow />

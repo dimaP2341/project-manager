@@ -1,15 +1,36 @@
 import { useContextApp } from '@/app/contextApp'
-import React from 'react'
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 
 export default function ConfirmationWindow() {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
   const {
     openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
-    selectedProjectObject: { setSelectedProject },
+    selectedProjectObject: { setSelectedProject, selectedProject },
+    allProjectsObject: {allProjects, setAllProjects}
   } = useContextApp()
 
   function closeConfirmationWindow() {
     setOpenConfirmWindow(false)
     setSelectedProject(null)
+  }
+
+  async function deleteFunction() {
+    try {
+     setIsLoading(true)
+     
+     await new Promise((res) => setTimeout(res, 1000))
+
+     deleteProject(selectedProject, setSelectedProject, allProjects, setAllProjects, setOpenConfirmWindow)
+    } catch (err) {
+      console.log(err)
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false)
+      setOpenConfirmWindow(false)
+      toast.success("Project deleted successfully")
+    }
   }
 
   return (
@@ -32,7 +53,7 @@ export default function ConfirmationWindow() {
           >
             Cancel
           </button>
-          <button className="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-white">Delete</button>
+          <button onClick={deleteFunction} className="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-white">{isLoading ? "Deleting..." : "Delete"}</button>
         </div>
       </div>
     </div>

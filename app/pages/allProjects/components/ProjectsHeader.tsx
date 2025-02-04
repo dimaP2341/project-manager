@@ -1,4 +1,4 @@
-import SearchBar from '@/app/components/SearchBar'
+import SearchBar from '@/app/Components/SearchBar'
 import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import SearchOutlined from '@mui/icons-material/SearchOutlined'

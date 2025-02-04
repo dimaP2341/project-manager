@@ -1,6 +1,6 @@
 'use client'
 import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
-import { AppType, IconData, SideBarMenuItem } from './types/AppType'
+import { AppType, IconData, SideBarMenuItem } from './Types/AppType'
 import { Project, projectsData } from './Data/AllProjects'
 
 const defaultState: AppType = {

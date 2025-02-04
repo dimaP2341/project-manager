@@ -1,4 +1,4 @@
-import SearchBar from '@/app/components/SearchBar'
+import SearchBar from '@/app/Components/SearchBar'
 import AddOutlined from '@mui/icons-material/AddOutlined'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import React from 'react'

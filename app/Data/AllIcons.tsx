@@ -1,4 +1,4 @@
 import React from 'react'
-import { IconData } from '../types/AppType'
+import { IconData } from '../Types/AppType'
 
 export const allIconsArray: IconData[] = []

@@ -1,10 +1,14 @@
 import { useContextApp } from '@/app/contextApp'
-import AllProjects from '@/app/pages/allProjects/AllProjects'
+import { allIconsArray } from '@/app/Data/AllIcons'
+import { addNewProject } from '@/app/Functions/projectsActions'
+import AllProjects from '@/app/Pages/allProjects/AllProjects'
 import { zodResolver } from '@hookform/resolvers/zod'
+import BorderAllOutlined from '@mui/icons-material/BorderAllOutlined'
 import CloseOutlined from '@mui/icons-material/CloseOutlined'
 import LibraryBooksOutlined from '@mui/icons-material/LibraryBooksOutlined'
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { FieldErrors, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -18,10 +22,13 @@ type FormData = z.infer<typeof schema>
 
 export default function ProjectWindow() {
   const {
-    openProjectWindowObject: { openProjectWindow },
+    openProjectWindowObject: { openProjectWindow, setOpenProjectWindow },
     allProjectsObject: { allProjects, setAllProjects },
     selectedIconObject: { selectedIcon, setSelectedIcon },
+    selectedProjectObject: {selectedProject}
   } = useContextApp()
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const {
     register,
@@ -35,7 +42,7 @@ export default function ProjectWindow() {
     resolver: zodResolver(schema),
   })
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = (data: FormData) => {
     const existingProject = AllProjects.find(
       (project) => project.title.toLowerCase() === data.projectName.toLowerCase(),
     )
@@ -48,9 +55,24 @@ export default function ProjectWindow() {
 
       setFocus('projectName')
     } else {
-      addNewProject(data, AllProjects, setAllProjects, setOpenProjectWindow, selectedIcon, reset)
+      projectsFunction(data)
     }
-    handleClose()
+  }
+
+  async function projectsFunction(data: FormData) {
+    try {
+      setIsLoading(false)
+
+      await new Promise((res) => setTimeout(res, 1000))
+
+      addNewProject(data, allProjects, setAllProjects, setOpenProjectWindow, selectedIcon, reset)
+    } catch (err) {
+      console.log(err)
+      toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false)
+      toast.success("Project added successfully")
+    }
   }
 
   const handleClose = () => {
@@ -60,8 +82,16 @@ export default function ProjectWindow() {
 
   useLayoutEffect(() => {
     if (openProjectWindow) {
-      console.log('Window opened, resetting form')
-      reset()
+      if(!selectedProject) {
+        reset()
+      } else {
+        setValue("ProjectName", selectedProject.title)
+
+        const findIconInAllIconsArray = allIconsArray.find((icon) => icon.name === selectedProject.icon)
+        if (findIconInAllIconsArray) {
+          setSelectedIcon(findIconInAllIconsArray)
+        }
+      }
     }
   }, [openProjectWindow, reset])
 
@@ -74,7 +104,7 @@ export default function ProjectWindow() {
       <Header handleClose={handleClose} />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 pt-8 px-7 mt-3">
         <ProjectInput register={register} errors={errors} />
-        <Footer handleClose={handleClose} />
+        <Footer handleClose={handleClose} isLoading={isLoading} />
       </form>
     </div>
   )
@@ -82,21 +112,22 @@ export default function ProjectWindow() {
 
 function Header({ handleClose }: { handleClose: () => void }) {
   const {
-    openProjectWindowObject: { setOpenProjectWindow },
+    selectedProjectObject: {selectedProject}
   } = useContextApp()
 
   return (
     <div className="flex justify-between items-center pt-7 px-7">
       <div className="flex items-center gap-2">
-        <div className="p-[7px] bg-orange-200 rounded-lg flex items-center justify-center"></div>
-        <span className="font-semibold text-lg">Add Project</span>
+        <div className="p-[7px] bg-orange-200 rounded-lg flex items-center justify-center">
+          <BorderAllOutlined sx={{fontSize: '21px'}} className='text-orange-600' />
+        </div>
+        <span className="font-semibold text-lg">{selectedProject ? "Edit Project" : "New Project"}</span>
       </div>
 
       <CloseOutlined
         sx={{ fontSize: '18px' }}
         className="text-slate-300 cursor-pointer"
         onClick={() => {
-          console.log('Close icon clicked')
           handleClose()
         }}
       />
@@ -139,9 +170,10 @@ function ProjectInput({ register, errors }: { register: UseFormRegister<FormData
   )
 }
 
-function Footer({ handleClose }: { handleClose: () => {} }) {
+function Footer({ handleClose, isLoading }: { handleClose: () => {}, isLoading: boolean }) {
   const {
-    openProjectWindowObject: { setOpenProjectWindow },
+    selectedIconObject: {setSelectedIcon},
+    selectedProjectObject: {selectedProject, setSelectedProject}
   } = useContextApp()
 
   return (
@@ -149,8 +181,9 @@ function Footer({ handleClose }: { handleClose: () => {} }) {
       <button
         type="button"
         onClick={() => {
-          console.log('Cancel button clicked')
           handleClose()
+          setSelectedProject(null)
+          setSelectedIcon(null)
         }}
         className="border border-slate-200 text-slate-400 text-[13px] p-2 px-6 rounded-md hover:border-slate-300 transition-all"
       >
@@ -160,7 +193,7 @@ function Footer({ handleClose }: { handleClose: () => {} }) {
         type="submit"
         className="bg-orange-600 hover:bg-orange-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
       >
-        Add Project
+        {isLoading ? "Saving..." : selectedProject ? "Edit Project" : "Add Project"}
       </button>
     </div>
   )

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { Project } from '../Data/AllProjects'
-import { IconData } from '../types/AppType'
+import { IconData } from '../Types/AppType'
 import { v4 as uuidv4 } from 'uuid'
 
 export function addNewProject(
@@ -25,4 +25,14 @@ export function addNewProject(
     setOpenProjectWindow(false)
     reset()
   } catch (err) {}
+}
+
+export function deleteProject(selectedProject: Project | null, setSelectedProject: Dispatch<SetStateAction<Project | null>>, allProjects: Project[], setAllProjects: Dispatch<SetStateAction<Project[]>>, setOpenProjectWindow: Dispatch<SetStateAction<boolean>>) {
+  if (selectedProject) {
+    const updateAllProjects = allProjects.filter(project => project.id !== selectedProject.id)
+
+    setAllProjects(updateAllProjects)
+    setSelectedProject(null)
+    setOpenProjectWindow(false)
+  }
 }
