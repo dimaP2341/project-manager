@@ -22,7 +22,8 @@ export default function TasksList() {
 function Tabs() {
   const {
     chosenProjectObject: {chosenProject}, 
-    allProjectsObject: {allProjects}
+    allProjectsObject: {allProjects},
+    tabsOptionsObject: {tabsOptions, setTabsOptions}
   } = useContextApp()
 
   function countOnGoingTasks() {
@@ -40,16 +41,33 @@ function Tabs() {
     }, 0)
   }
 
+  function completedTasks() {
+    if (chosenProject) {
+      return chosenProject.tasks.length - countOnGoingTasks()
+    }
+
+    const totalTasksInAllProjects = allProjects.reduce((acc, project) => {
+      return acc + project.tasks.length
+    }, 0)
+
+    return totalTasksInAllProjects - countOnGoingTasks()
+  }
+
+  function switchTabs(index: number) {
+    setTabsOptions((prev) => prev.map((tab, i) => ({
+      ...tab,
+      isSelected: index === i
+    })))
+  }
+
   return (
     <div className="flex items-center gap-6 ml-3 mt-8 mb-5">
-      <div className="flex gap-2 text-orange-400 font-semibold">
-        <span>On Going Tasks</span>
-        <span className="bg-orange-600 text-white px-2 rounded-md max-[420px]:hidden">7</span>
-      </div>
-      <div className="text-slate-400 flex gap-2 items-center">
-        <span>Completed Tasks</span>
-        <span className="bg-slate-200 px-2 rounded-md max-[420px]:hidden">8</span>
-      </div>
+      {tabsOptions.map((singleTabOption, index) => (
+        <div key={index} onClick={() => switchTabs(index)} className={`flex gap-2 cursor-pointer ${singleTabOption.isSelected ? "text-orange-600 font-semibold" : "text-slate-300"}`}>
+          <span>{singleTabOption.name}</span>
+          <span className={`${singleTabOption.isSelected ? "bg-orange-600" : "bg-slate-300"} text-white px-2 rounded-md max-[420px]:hidden`}>{singleTabOption.id === 1 ? countOnGoingTasks() : completedTasks()}</span>
+        </div>
+      ))}
     </div>
   )
 }

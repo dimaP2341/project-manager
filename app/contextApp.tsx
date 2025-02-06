@@ -1,6 +1,6 @@
 'use client'
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react'
-import { AppType, IconData, SideBarMenuItem } from './Types/AppType'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { AppType, IconData, SideBarMenuItem, TabOption } from './Types/AppType'
 import { Project, projectsData } from './Data/AllProjects'
 
 const defaultState: AppType = {
@@ -81,6 +81,10 @@ export default function ContextAppProvider({ children }: { children: React.React
   })
 
   const [chosenProject, setChosenProject] = useState<Project | null>(null)
+  const [tabsOptions, setTabsOptions] = useState<TabOption[]>([
+      { id: 1, name: "On Going Tasks", isSelected: true},
+      { id: 2, name: "Completed Tasks", isSelected: false},
+  ])
 
   useEffect(() => {
     function handleResize() {
@@ -138,7 +142,8 @@ export default function ContextAppProvider({ children }: { children: React.React
         sortingOptionObject: { sortingOptions, setSortingOptions},
         openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown},
         sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions},
-        chosenProjectObject: {chosenProject, setChosenProject}
+        chosenProjectObject: {chosenProject, setChosenProject},
+        tabsOptionsObject: {tabsOptions, setTabsOptions}
       }}
     >
       {children}

@@ -34,6 +34,12 @@ type SortingDropDownPosition = {
   width?: number
 }
 
+export type TabOption = {
+  id: number
+  name: string
+  isSelected: boolean
+}
+
 export type AppType = {
   openSideBarObject: {
     openSideBar: boolean
@@ -108,5 +114,10 @@ openSortingDropDownObject: {
   chosenProjectObject: {
     chosenProject: Project | null
     setChosenProject: Dispatch<SetStateAction<Project | null>>
+  }
+
+  tabsOptionsObject: {
+    tabsOptions: TabOption[]
+    setTabsOptions: Dispatch<SetStateAction<TabOption[]>>
   }
 }
