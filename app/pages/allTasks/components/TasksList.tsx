@@ -1,3 +1,4 @@
+import { useContextApp } from '@/app/contextApp'
 import CachedOutlined from '@mui/icons-material/CachedOutlined'
 import CheckBox from '@mui/icons-material/CheckBox'
 import CircleOutlined from '@mui/icons-material/CircleOutlined'
@@ -19,6 +20,26 @@ export default function TasksList() {
 }
 
 function Tabs() {
+  const {
+    chosenProjectObject: {chosenProject}, 
+    allProjectsObject: {allProjects}
+  } = useContextApp()
+
+  function countOnGoingTasks() {
+    if (chosenProject) {
+      return chosenProject.tasks.reduce((accTask, task) => {
+        return accTask + (task.status === "In progress" ? 1 : 0)
+      }, 0)
+    }
+
+    return allProjects.reduce((accProjects, project) => {
+      return (accProjects + project.tasks.reduce((accTasks, task) => {
+        return accTasks + (task.status === "In progress" ? 1 : 0)
+      }, 0)
+      )
+    }, 0)
+  }
+
   return (
     <div className="flex items-center gap-6 ml-3 mt-8 mb-5">
       <div className="flex gap-2 text-orange-400 font-semibold">

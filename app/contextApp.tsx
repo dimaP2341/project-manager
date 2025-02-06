@@ -80,6 +80,8 @@ export default function ContextAppProvider({ children }: { children: React.React
     left: 0
   })
 
+  const [chosenProject, setChosenProject] = useState<Project | null>(null)
+
   useEffect(() => {
     function handleResize() {
       setIsMobileView(window.innerWidth <= 940)
@@ -135,7 +137,8 @@ export default function ContextAppProvider({ children }: { children: React.React
         openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
         sortingOptionObject: { sortingOptions, setSortingOptions},
         openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown},
-        sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions}
+        sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions},
+        chosenProjectObject: {chosenProject, setChosenProject}
       }}
     >
       {children}

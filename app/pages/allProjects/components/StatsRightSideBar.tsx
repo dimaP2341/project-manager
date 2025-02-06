@@ -95,6 +95,17 @@ function SingleProject({project}: {project: Project}) {
 function ProjectsList({completedProjects}: {completedProjects: Project[]}) {
   return (
     <ul className="flex flex-col gap-3 mt-16 mx-4 overflow-auto">
+      <div className='h-[100%] flex items-center justify-center py-20 w-full'>
+        {completedProjects.length === 0 && (
+          <div className={`p-1 gap-5 flex flex-col justify-center opacity-40 pb-8 items-center`}>
+            <div className='flex flex-col items-center gap-2'>
+              <p className='text-slate-700 text-[12px] mb-1 text-center'>
+                {`No Projects accomplished Yet...`}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
       {completedProjects.map((project, index) => (
         <div key={project.id}>
           <SingleProject project={project} />

@@ -26,6 +26,8 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
   const {
     dropDownPositionObject: { setDropDownPositions },
     openDropDownObject: { setOpenDropDown },
+    selectedProjectObject: {setSelectedProject},
+    sideBarMenuObject: {setSideBarMenu}
   } = useContextApp()
 
   function openDropDown(e: MouseEvent) {
@@ -40,7 +42,17 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
       })
 
       setOpenDropDown(true)
+      setSelectedProject(project)
     }
+  }
+
+  function showAllTasksOfProject() {
+    setChosenProject(project)
+    setSideBarMenu((prevState) => prevState.map((item) => ({
+      ...item,
+      isSelected: item.id === 2 ? true : false,
+    }))
+    )
   }
   return (
     <div className="flex justify-between items-center">

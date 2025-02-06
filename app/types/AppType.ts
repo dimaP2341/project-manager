@@ -104,4 +104,9 @@ openSortingDropDownObject: {
     sortingDropDownPositions: SortingDropDownPosition
     setSortingDropDownPositions: Dispatch<SetStateAction<SortingDropDownPosition>>
   }
+
+  chosenProjectObject: {
+    chosenProject: Project | null
+    setChosenProject: Dispatch<SetStateAction<Project | null>>
+  }
 }

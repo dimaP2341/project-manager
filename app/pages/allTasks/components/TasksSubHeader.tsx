@@ -1,3 +1,5 @@
+import { Task } from '@/app/Data/AllProjects'
+import { useContextApp } from '@/app/contextApp'
 import KeyboardArrowDownOutlined from '@mui/icons-material/KeyboardArrowDownOutlined'
 import SplitscreenOutlined from '@mui/icons-material/SplitscreenOutlined'
 import React from 'react'
@@ -12,6 +14,22 @@ export default function TasksSubHeader() {
 }
 
 function MyProjectsText() {
+  const {chosenProjectObject: {chosenProject, setChosenProject}, allProjectsObject: {allProjects}} = useContextApp()
+
+  function allTasksInAllProjects() {
+    return allProjects.reduce((acc, project) => acc + project.tasks.length, 0)
+  }
+
+  function calculateCompletedTasks(tasks: Task[]) {
+    return tasks.filter((task) => task.status === "Completed").length
+  }
+
+  const totalTasks = chosenProject ? chosenProject.tasks.length : allTasksInAllProjects()
+
+  const completedTasks = chosenProject ? calculateCompletedTasks(chosenProject.tasks) : allProjects.reduce((acc, project) => acc + calculateCompletedTasks(project.tasks), 0)
+
+  const completionPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0
+
   return (
     <div className="flex items-center gap-3 max-sm:gap-2">
       <div className="w-[41px] -mt-1 flex justify-center items-center h-[44px] rounded-md bg-orange-100">
@@ -20,16 +38,16 @@ function MyProjectsText() {
       <ul className="flex flex-col gap-[7px] max-sm:gap-[10px]">
         <li className="text-[17px] font-semibold flex gap-2 items-center">
           <div className="text-slate-700 flex gap-2 items-center">
-            <span className="text-lg">All Projects</span>
-            <span className="bg-slate-700 text-white text-[14px] p-[2px] px-2 rounded-md max-[420px]:hidden">6</span>
+            <span className="text-lg">{chosenProject?.title || "All Projects"}</span>
+            <span className="bg-slate-700 text-white text-[14px] p-[2px] px-2 rounded-md max-[420px]:hidden">{totalTasks}</span>
           </div>
           <KeyboardArrowDownOutlined className="text-slate-600 text-lg" />
         </li>
         <div className="flex gap-1 items-center">
           <li className="text-[12px] h-[4px] w-[280px] bg-slate-200 rounded-md overflow-auto max-sm:w-[170px] max-[420px]:w-[130px]">
-            <div className="w-1/2 h-[100%] bg-orange-600 rounded-r-xl"></div>
+            <div className="w-1/2 h-[100%] bg-orange-600 rounded-r-xl" style={{width: `${completionPercentage}%`}}></div>
           </li>
-          <p className="text-[12px] text-slate-400 ml-3 max-sm:hidden">20% Completed</p>
+          <p className="text-[12px] text-slate-400 ml-3 max-sm:hidden">{completionPercentage.toFixed(0)}% Completed</p>
         </div>
       </ul>
     </div>
