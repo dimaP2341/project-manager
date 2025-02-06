@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef } from 'react'
 
 export default function SortingDropDown() {
     const {
-    allProjectsObject: {allProjects},
+    allProjectsObject: {allProjects, setAllProjects},
     openSortingDropDownObject: {openSortingDropDown, setOpenSortingDropDown}, 
     sortingOptionObject: {sortingOptions, setSortingOptions},
     sortingDropDownPositionsObject: {sortingDropDownPositions},
@@ -64,7 +64,6 @@ export default function SortingDropDown() {
       console.log(selectedOption)
 
       setSortingOptions(updateSortingOptions)
-      setAllProjects(allSortedProjects)
     }
 
     return (
@@ -78,7 +77,7 @@ export default function SortingDropDown() {
             <div className='flex flex-col gap-2 ml-2 mt-[5px]'>
                 {category.options.map((option, optionIndex) => (
                     <div key={optionIndex}>
-                        <span className={`${option.selected ? "text-orange-600" : "text-slate-500"} cursor-pointer hover:text-orange-600`}>{option.label}</span>
+                        <span onClick={() => handleOptionSelected(categoryIndex, optionIndex)} className={`${option.selected ? "text-orange-600" : "text-slate-500"} cursor-pointer hover:text-orange-600`}>{option.label}</span>
                     </div>
                 ))}
             </div>

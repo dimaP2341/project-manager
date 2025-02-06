@@ -16,9 +16,13 @@ function MyProjectsText() {
 }
 
 function SortByButton() {
-  const {openSortingDropDownObject: {setOpenSortingDropDown}, sortingDropDownPositionsObject: {setSortingDropDownPositions}} = useContextApp()
+  const {openSortingDropDownObject: {setOpenSortingDropDown}, sortingDropDownPositionsObject: {setSortingDropDownPositions}, sortingOptionObject: {sortingOptions}} = useContextApp()
 
   const sortingLinkRef = useRef<HTMLDivElement>(null)
+
+  let sortingLabel = ""
+
+  const flatten = sortingOptions.flatMap((option) => option.options).find((option) => option.selected)
 
   function clickedSortingLink() {
     if (sortingLinkRef.current) {
@@ -33,6 +37,15 @@ function SortByButton() {
 
     setOpenSortingDropDown(true)
   }
+
+  if (flatten) {
+    if (flatten.label === "A-Z" || flatten.label === "Z-A") {
+      sortingLabel = `Order ${flatten.label}`
+    } else {
+      sortingLabel = `${flatten.label} Projects`
+    }
+  }
+  
   return (
     <div className="flex text-[15px] max-sm:text-[14px] font-semibold gap-3 max-sm:gap-1">
       <span className="text-slate-300">Sort By</span>
