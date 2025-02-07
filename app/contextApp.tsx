@@ -86,6 +86,12 @@ export default function ContextAppProvider({ children }: { children: React.React
       { id: 2, name: "Completed Tasks", isSelected: false},
   ])
 
+  const [openProjectsDropDown, setOpenProjectsDropDown] = useState(false)
+  const [projectsDropDownPositions, setProjectsDropDownPositions] = useState({
+    top: 0,
+    left: 0
+  })
+
   useEffect(() => {
     function handleResize() {
       setIsMobileView(window.innerWidth <= 940)
@@ -143,7 +149,15 @@ export default function ContextAppProvider({ children }: { children: React.React
         openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown},
         sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions},
         chosenProjectObject: {chosenProject, setChosenProject},
-        tabsOptionsObject: {tabsOptions, setTabsOptions}
+        tabsOptionsObject: {tabsOptions, setTabsOptions},
+        projectsDropDownPositionsObject: {
+          projectsDropDownPositions,
+          setProjectsDropDownPositions
+        },
+        openProjectsDropDownObject: {
+          openProjectsDropDown,
+          setOpenProjectsDropDown
+        }
       }}
     >
       {children}

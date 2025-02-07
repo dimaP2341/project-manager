@@ -1,3 +1,4 @@
+import { Task } from '@/app/Data/AllProjects'
 import { useContextApp } from '@/app/contextApp'
 import CachedOutlined from '@mui/icons-material/CachedOutlined'
 import CheckBox from '@mui/icons-material/CheckBox'
@@ -5,15 +6,45 @@ import CircleOutlined from '@mui/icons-material/CircleOutlined'
 import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined'
 import EditOutlined from '@mui/icons-material/EditOutlined'
 import ListOutlined from '@mui/icons-material/ListOutlined'
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 export default function TasksList() {
+  const {
+    chosenProjectObject: {chosenProject},
+    allProjectsObject: {allProjects},
+    tabsOptionsObject: {tabsOptions}
+  } = useContextApp()
+
+  const [allTasks, setAllTasks] = useState<Task[]>([])
+
+  useEffect(() => {
+    const extractAllTasks = allProjects.flatMap((project) => project.tasks)
+    setAllTasks(extractAllTasks)
+  }, [allProjects])
+
+  const filteredTasks = useMemo(() => {
+    let tasks = allTasks
+
+    if (chosenProject) {
+      tasks = tasks.filter((task) => task.projectName === chosenProject.title)
+    }
+
+    if (tabsOptions[1].isSelected) {
+      tasks = tasks.filter((task) => task.status === "Completed")
+    } else {
+      tasks = tasks.filter((task) => task.status === "In progress")
+    }
+
+    return tasks
+  }, [allTasks, chosenProject, tabsOptions])
+
   return (
     <div className="ml-12 mt-11 flex flex-col gap-4 max-sm:ml-0">
       <Tabs />
       <div className="flex flex-col gap-4">
-        <SingleTask />
-        <SingleTask />
+        {filteredTasks.map((singleTask, index) => (
+          <SingleTask key={index} task={singleTask} />
+        ))}
       </div>
     </div>
   )

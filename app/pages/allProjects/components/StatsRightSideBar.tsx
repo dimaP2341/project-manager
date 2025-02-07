@@ -77,7 +77,7 @@ function truncateString(str: string, maxLength: number): string {
   return str.length > maxLength ? str.slice(0, maxLength) + "..." : str;
 }
 
-function SingleProject({project}: {project: Project}) {
+export function SingleProject({project}: {project: Project}) {
   return (
     <li className="p-3 flex gap-2 items-center">
       <div className="w-8 h-8 bg-orange-600 rounded-md justify-center items-center flex text-white">

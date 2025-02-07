@@ -8,6 +8,7 @@ import ProjectWindow from './Components/Windows/ProjectWindow'
 import MoreDropDown from './Components/DropDowns/MoreDropDown'
 import ConfirmationWindow from './Components/Windows/ConfirmationWindow'
 import { Toaster } from 'react-hot-toast'
+import ProjectsDropDown from './Components/DropDowns/ProjectsDropDown'
 
 export default function Home() {
   const {
@@ -28,7 +29,8 @@ export default function Home() {
 
   return (
     <div className="flex w-full h-screen poppins">
-      <Toaster/>
+      <ProjectsDropDown />
+      <Toaster />
       <ConfirmationWindow />
       <MoreDropDown />
       <ProjectWindow />

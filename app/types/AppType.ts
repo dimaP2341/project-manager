@@ -120,4 +120,14 @@ openSortingDropDownObject: {
     tabsOptions: TabOption[]
     setTabsOptions: Dispatch<SetStateAction<TabOption[]>>
   }
+
+  openProjectsDropDownObject: {
+    openProjectsDropDown: boolean
+    setOpenProjectsDropDown: Dispatch<SetStateAction<boolean>>
+  }
+
+  projectsDropDownPositionsObject: {
+    projectsDropDownPositions: SortingDropDownPosition
+    setProjectsDropDownPositions: Dispatch<SetStateAction<SortingDropDownPosition>>
+  }
 }
