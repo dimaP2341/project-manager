@@ -1,13 +1,41 @@
 import { Project } from '@/app/Data/AllProjects'
 import { useContextApp } from '@/app/contextApp'
 import DensitySmallOutlined from '@mui/icons-material/DensitySmallOutlined'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 export default function ProjectsDropDown() {
     const {
         allProjectsObject: {allProjects, setAllProjects},
+        openProjectsDropDownObject: {openProjectsDropDown, setOpenProjectsDropDown},
+        projectsDropDownPositionsObject: {projectsDropDownPositions}
     } = useContextApp()
     const dropDownRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if(dropDownRef.current && !dropDownRef.current.contains(event.target as Node)) {
+                setOpenProjectsDropDown(false)
+            }
+        }
+
+        function handleResize() {
+            setOpenProjectsDropDown(false)
+        }
+
+        if (openProjectsDropDown) {
+            document.addEventListener("mousedown", handleClickOutside)
+            window.addEventListener("resize", handleResize)
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside)
+            window.removeEventListener("resize", handleResize)
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+            window.removeEventListener("resize", handleResize)
+        }
+        
+    }, [openProjectsDropDown])
 
 
   return (

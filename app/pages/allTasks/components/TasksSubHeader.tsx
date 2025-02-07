@@ -2,7 +2,7 @@ import { Task } from '@/app/Data/AllProjects'
 import { useContextApp } from '@/app/contextApp'
 import KeyboardArrowDownOutlined from '@mui/icons-material/KeyboardArrowDownOutlined'
 import SplitscreenOutlined from '@mui/icons-material/SplitscreenOutlined'
-import React from 'react'
+import React, { useRef } from 'react'
 
 export default function TasksSubHeader() {
   return (
@@ -14,7 +14,12 @@ export default function TasksSubHeader() {
 }
 
 function MyProjectsText() {
-  const {chosenProjectObject: {chosenProject, setChosenProject}, allProjectsObject: {allProjects}} = useContextApp()
+  const {
+    chosenProjectObject: {chosenProject}, 
+    allProjectsObject: {allProjects},
+    projectsDropDownPositionsObject: {setProjectsDropDownPositions}
+    openProjectsDropDownObject: {openProjectsDropDown, setOpenProjectsDropDown}
+} = useContextApp()
 
   function allTasksInAllProjects() {
     return allProjects.reduce((acc, project) => acc + project.tasks.length, 0)
@@ -30,6 +35,17 @@ function MyProjectsText() {
 
   const completionPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0
 
+  const projectTitleRef = useRef<HTMLDivElement>(null)
+
+  function openTheProjectDropDown() {
+    if (projectTitleRef.current) {
+      const rect = projectTitleRef.current.getBoundingClientRect()
+      const {top, left, width} = rect
+      setProjectsDropDownPositions({left, top, width})
+    }
+    setOpenProjectsDropDown(!openProjectsDropDown)
+  }
+
   return (
     <div className="flex items-center gap-3 max-sm:gap-2">
       <div className="w-[41px] -mt-1 flex justify-center items-center h-[44px] rounded-md bg-orange-100">
@@ -37,7 +53,7 @@ function MyProjectsText() {
       </div>
       <ul className="flex flex-col gap-[7px] max-sm:gap-[10px]">
         <li className="text-[17px] font-semibold flex gap-2 items-center">
-          <div className="text-slate-700 flex gap-2 items-center">
+          <div className="text-slate-700 flex gap-2 items-center" ref={projectTitleRef} onClick={openTheProjectDropDown}>
             <span className="text-lg">{chosenProject?.title || "All Projects"}</span>
             <span className="bg-slate-700 text-white text-[14px] p-[2px] px-2 rounded-md max-[420px]:hidden">{totalTasks}</span>
           </div>
