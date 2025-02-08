@@ -17,7 +17,7 @@ function MyProjectsText() {
   const {
     chosenProjectObject: {chosenProject}, 
     allProjectsObject: {allProjects},
-    projectsDropDownPositionsObject: {setProjectsDropDownPositions}
+    projectsDropDownPositionsObject: {setProjectsDropDownPositions},
     openProjectsDropDownObject: {openProjectsDropDown, setOpenProjectsDropDown}
 } = useContextApp()
 

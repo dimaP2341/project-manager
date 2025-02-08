@@ -43,7 +43,11 @@ export function editProject(selectedProject: Project | null, setSelectedProject:
     const updateProject: Project = {
       ...selectedProject,
       title: data.projectName,
-      icon: selectedIcon?.name || "LocalLibrary"
+      icon: selectedIcon?.name || "LocalLibrary",
+      tasks: selectedProject.tasks.map((task) => ({
+        ...task,
+        projectName: data.projectName
+      }))
     }
 
     const updateAllProjects = allProjects.map((project) => {

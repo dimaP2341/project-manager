@@ -13,7 +13,7 @@ const defaultState: AppType = {
   allIconsDataObject: { allIconsData: [], setAllIconsData: () => {} },
   openIconWindowObject: { openIconWindow: false, setOpenIconWindow: () => {} },
   selectedIconObject: { selectedIcon: null, setSelectedIcon: () => {} },
-  sortingOptionObject: {sortingOptions: [], setSortingOptions: () => {}}
+  sortingOptionObject: {sortingOptions: [], setSortingOptions: () => {}},
   sortingDropDownPositionObject: {
     sortingDropDownPositions: {left: 0, top: 0},
     setSortingDropDownPositions: () => {}
@@ -44,7 +44,7 @@ export default function ContextAppProvider({ children }: { children: React.React
   ])
 
   const [openProjectWindow, setOpenProjectWindow] = useState(false)
-  const [allIconsData, setAllIconsData] = useState<IconData[]>(allIconsData)
+  const [allIconsData, setAllIconsData] = useState<IconData[]>([])
   const [openIconWindow, setOpenIconWindow] = useState(false)
   const [selectedIcon, setSelectedIcon] = useState<IconData | null>(null)
   const [allProjects, setAllProjects] = useState<Project[]>([])
@@ -125,8 +125,11 @@ export default function ContextAppProvider({ children }: { children: React.React
   }, [isMobileView])
 
   useEffect(() => {
-    setOpenSideBar(false)
-  }, [sideBarMenu])
+    if (!openSideBar) {
+      setOpenSideBar(false);
+    }
+  }, [sideBarMenu, openSideBar]);
+
 
   return (
     <ContextApp.Provider

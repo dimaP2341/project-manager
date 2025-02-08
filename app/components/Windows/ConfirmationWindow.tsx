@@ -1,3 +1,4 @@
+import { deleteProject } from '@/app/Functions/projectsActions'
 import { useContextApp } from '@/app/contextApp'
 import React, { useState } from 'react'
 import toast from 'react-hot-toast'
@@ -8,7 +9,8 @@ export default function ConfirmationWindow() {
   const {
     openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
     selectedProjectObject: { setSelectedProject, selectedProject },
-    allProjectsObject: {allProjects, setAllProjects}
+    allProjectsObject: {allProjects, setAllProjects},
+    chosenProjectObject: {setChosenProject}
   } = useContextApp()
 
   function closeConfirmationWindow() {
@@ -29,6 +31,7 @@ export default function ConfirmationWindow() {
     } finally {
       setIsLoading(false)
       setOpenConfirmWindow(false)
+      setChosenProject(null)
       toast.success("Project deleted successfully")
     }
   }

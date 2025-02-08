@@ -1,7 +1,8 @@
 import { useContextApp } from '@/app/contextApp'
 import { allIconsArray } from '@/app/Data/AllIcons'
+import { Project } from '@/app/Data/AllProjects'
 import { addNewProject, editProject } from '@/app/Functions/projectsActions'
-import AllProjects from '@/app/Pages/allProjects/AllProjects'
+import AllProjects from '@/app/pages/allProjects/AllProjects'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BorderAllOutlined from '@mui/icons-material/BorderAllOutlined'
 import CloseOutlined from '@mui/icons-material/CloseOutlined'
@@ -25,7 +26,8 @@ export default function ProjectWindow() {
     openProjectWindowObject: { openProjectWindow, setOpenProjectWindow },
     allProjectsObject: { allProjects, setAllProjects },
     selectedIconObject: { selectedIcon, setSelectedIcon },
-    selectedProjectObject: {selectedProject, setSelectedProject}
+    selectedProjectObject: {selectedProject, setSelectedProject},
+    chosenProjectObject: {chosenProject, setChosenProject}
   } = useContextApp()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -76,6 +78,16 @@ export default function ProjectWindow() {
       toast.error("Something went wrong")
     } finally {
       setIsLoading(false)
+
+      if (selectedProject && chosenProject) {
+        if (chosenProject.id && selectedProject.id) {
+          const updateChosenProject: Project = {
+            ...chosenProject,
+            title: data.projectName,
+          }
+          setChosenProject(updateChosenProject)
+        }
+      }
       toast.success(`Project ${selectedProject ? "edited" : "added"} successfully`)
     }
   }
@@ -85,20 +97,21 @@ export default function ProjectWindow() {
     reset()
   }
 
-  useLayoutEffect(() => {
-    if (openProjectWindow) {
-      if(!selectedProject) {
-        reset()
-      } else {
-        setValue("ProjectName", selectedProject.title)
+useLayoutEffect(() => {
+  if (openProjectWindow) {
+    if (!selectedProject) {
+      reset()
+    } else {
+      setValue("projectName", selectedProject.title)
 
-        const findIconInAllIconsArray = allIconsArray.find((icon) => icon.name === selectedProject.icon)
-        if (findIconInAllIconsArray) {
-          setSelectedIcon(findIconInAllIconsArray)
-        }
+      const findIconInAllIconsArray = allIconsArray.find((icon) => icon.name === selectedProject.icon)
+      if (findIconInAllIconsArray) {
+        setSelectedIcon(findIconInAllIconsArray)
       }
     }
-  }, [openProjectWindow, reset])
+  }
+}, [openProjectWindow, reset, selectedProject, setSelectedIcon, setValue])
+
 
   return (
     <div

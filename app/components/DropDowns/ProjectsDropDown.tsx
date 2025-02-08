@@ -52,8 +52,15 @@ export default function ProjectsDropDown() {
 }
 
 function AllProjectsItem() {
+    const {
+        chosenProjectObject: {chosenProject, setChosenProject},
+        openProjectsDropDownObject: {setOpenProjectsDropDown}
+    } = useContextApp()
     return (
-        <div className='flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer'>
+        <div onClick={() => {
+            setChosenProject(null)
+            setOpenProjectsDropDown(false)
+        }} className='flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer'>
             <div className='flex gap-2 items-center'>
                 <div>
                     <DensitySmallOutlined className='text-orange-600 text-[22px]' />
@@ -65,8 +72,24 @@ function AllProjectsItem() {
 }
 
 function SingleProject({singleProject}: {singleProject: Project}) {
+    const {
+        chosenProjectObject: {chosenProject, setChosenProject},
+        allProjectsObject: {allProjects},
+        openProjectsDropDownObject: {setOpenProjectsDropDown}
+    } = useContextApp()
+
+    function handleTheProjectClicked(projectId: string) {
+        const findProject = allProjects.find(project => project.id === projectId)
+
+        if(findProject) {
+            setChosenProject(findProject)
+        }
+
+        setOpenProjectsDropDown(false)
+    }
+
     return (
-        <div className={`flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer`}>
+        <div onClick={() => handleTheProjectClicked(singleProject.id)} className={`flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer ${chosenProject?.id === singleProject.id && "border border-orange-600 bg-orange-50"}`}>
             <div className='flex gap-2 items-center'>
                 {" "}
                 {getIconComponent(singleProject.icon, "text-orange-600", "22px")}{" "}
