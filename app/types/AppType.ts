@@ -28,7 +28,7 @@ type SortingOption = {
   }
 }
 
-type SortingDropDownPosition = {
+export type SortingDropDownPosition = {
   left: number
   top: number
   width?: number
