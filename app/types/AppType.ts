@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction } from 'react'
-import { Project } from '../Data/AllProjects'
+import { Project, Task } from '../Data/AllProjects'
 
 export type SideBarMenuItem = {
   id: number
@@ -101,10 +101,10 @@ export type AppType = {
     setSortingOptions: Dispatch<SetStateAction<SortingOption[]>>
   }
 
-openSortingDropDownObject: {
-  openSortingDropDown: boolean
-  setOpenSortingDropDown: Dispatch<SetStateAction<boolean>>
-}
+  openSortingDropDownObject: {
+    openSortingDropDown: boolean
+    setOpenSortingDropDown: Dispatch<SetStateAction<boolean>>
+  }
 
   sortingDropDownPositionsObject: {
     sortingDropDownPositions: SortingDropDownPosition
@@ -129,5 +129,15 @@ openSortingDropDownObject: {
   projectsDropDownPositionsObject: {
     projectsDropDownPositions: SortingDropDownPosition
     setProjectsDropDownPositions: Dispatch<SetStateAction<SortingDropDownPosition>>
+  }
+
+  openTasksWindowObject: {
+    openTasksWindow: boolean
+    setOpenTasksWindow: Dispatch<SetStateAction<boolean>>
+  }
+
+  allTasksObject: {
+    allTasks: Task[]
+    setAllTasks: Dispatch<SetStateAction<Task[]>>
   }
 }

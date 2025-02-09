@@ -3,7 +3,9 @@ import { SortingDropDownPosition } from '@/app/Types/AppType'
 import { useContextApp } from '@/app/contextApp'
 import { zodResolver } from '@hookform/resolvers/zod'
 import CircleOutlined from '@mui/icons-material/CircleOutlined'
+import CloseOutlined from '@mui/icons-material/CloseOutlined'
 import KeyboardArrowDownOutlined from '@mui/icons-material/KeyboardArrowDownOutlined'
+import ListAltOutlined from '@mui/icons-material/ListAltOutlined'
 import { ReactNode, createContext, use, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FieldErrors, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -331,6 +333,36 @@ function TaskInput({ register, errors }: { register: UseFormRegister<FormData>; 
 
         <div onClick={() => setOpenIconWindow(true)} className=""></div>
       </div>
+    </div>
+  )
+}
+
+function Header() {
+  const {
+    openTasksWindowObject: { setOpenTasksWindow },
+    selectedTaskObject: { selectedTask, setSelectedTask },
+  } = useContextApp()
+
+  return (
+    <div className="flex justify-between items-center pt-7 px-7">
+      <div className="flex items-center gap-2">
+        <div className="p-[7px] bg-orange-200 rounded-lg flex items-center justify-center">
+          <ListAltOutlined
+            sx={{ fontSize: '21px' }}
+            className="text-orange-600"
+            onClick={() => setOpenTasksWindow(false)}
+          />
+        </div>
+        <span className="font-semibold text-lg">{selectedTask ? 'Edit Task' : 'Add New Task'}</span>
+      </div>
+      <CloseOutlined
+        sx={{ fontSize: '18px' }}
+        className="text-slate-300 cursor-pointer"
+        onClick={() => {
+          setOpenTasksWindow(false)
+          setSelectedTask(null)
+        }}
+      />
     </div>
   )
 }
