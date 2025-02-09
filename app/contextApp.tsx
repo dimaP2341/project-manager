@@ -1,7 +1,7 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { AppType, IconData, SideBarMenuItem, TabOption } from './Types/AppType'
-import { Project, projectsData } from './Data/AllProjects'
+import { Project, Task, projectsData } from './Data/AllProjects'
 
 const defaultState: AppType = {
   openSideBarObject: { openSideBar: false, setOpenSideBar: () => {} },
@@ -13,11 +13,11 @@ const defaultState: AppType = {
   allIconsDataObject: { allIconsData: [], setAllIconsData: () => {} },
   openIconWindowObject: { openIconWindow: false, setOpenIconWindow: () => {} },
   selectedIconObject: { selectedIcon: null, setSelectedIcon: () => {} },
-  sortingOptionObject: {sortingOptions: [], setSortingOptions: () => {}},
+  sortingOptionObject: { sortingOptions: [], setSortingOptions: () => {} },
   sortingDropDownPositionObject: {
-    sortingDropDownPositions: {left: 0, top: 0},
-    setSortingDropDownPositions: () => {}
-  }
+    sortingDropDownPositions: { left: 0, top: 0 },
+    setSortingDropDownPositions: () => {},
+  },
 }
 
 const ContextApp = createContext<AppType>(defaultState)
@@ -59,38 +59,41 @@ export default function ContextAppProvider({ children }: { children: React.React
 
   const [sortingOptions, setSortingOptions] = useState([
     {
-      category: "Order",
+      category: 'Order',
       options: [
-        {label: "A-Z", value: "asc", selected: true},
-        {label: "Z-A", value: "desc", selected: false}
+        { label: 'A-Z', value: 'asc', selected: true },
+        { label: 'Z-A', value: 'desc', selected: false },
       ],
     },
     {
-      category: "Date",
+      category: 'Date',
       options: [
-        {label: "Newest", value: "newest", selected: false},
-        {label: "Oldest", value: "oldest", selected: false}
-      ]
-    }
+        { label: 'Newest', value: 'newest', selected: false },
+        { label: 'Oldest', value: 'oldest', selected: false },
+      ],
+    },
   ])
 
   const [openSortingDropDown, setOpenSortingDropDown] = useState(false)
   const [sortingDropDownPositions, setSortingDropDownPositions] = useState({
     top: 0,
-    left: 0
+    left: 0,
   })
 
   const [chosenProject, setChosenProject] = useState<Project | null>(null)
   const [tabsOptions, setTabsOptions] = useState<TabOption[]>([
-      { id: 1, name: "On Going Tasks", isSelected: true},
-      { id: 2, name: "Completed Tasks", isSelected: false},
+    { id: 1, name: 'On Going Tasks', isSelected: true },
+    { id: 2, name: 'Completed Tasks', isSelected: false },
   ])
 
   const [openProjectsDropDown, setOpenProjectsDropDown] = useState(false)
   const [projectsDropDownPositions, setProjectsDropDownPositions] = useState({
     top: 0,
-    left: 0
+    left: 0,
   })
+
+  const [openTasksWindow, setOpenTasksWindow] = useState(false)
+  const [allTasks, setAllTasks] = useState<Task[]>([])
 
   useEffect(() => {
     function handleResize() {
@@ -110,6 +113,8 @@ export default function ContextAppProvider({ children }: { children: React.React
     const fetchData = async () => {
       try {
         await new Promise((res) => setTimeout(res, 1000))
+        const extractAllTasks = projectsData.flatMap((project) => project.tasks)
+        setAllTasks(extractAllTasks)
         setAllProjects(projectsData)
       } catch (err) {
         console.log(err)
@@ -126,10 +131,9 @@ export default function ContextAppProvider({ children }: { children: React.React
 
   useEffect(() => {
     if (!openSideBar) {
-      setOpenSideBar(false);
+      setOpenSideBar(false)
     }
-  }, [sideBarMenu, openSideBar]);
-
+  }, [sideBarMenu, openSideBar])
 
   return (
     <ContextApp.Provider
@@ -148,19 +152,27 @@ export default function ContextAppProvider({ children }: { children: React.React
         openDropDownObject: { openDropDown, setOpenDropDown },
         selectedProjectObject: { selectedProject, setSelectedProject },
         openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
-        sortingOptionObject: { sortingOptions, setSortingOptions},
-        openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown},
-        sortingDropDownPositionsObject: {sortingDropDownPositions, setSortingDropDownPositions},
-        chosenProjectObject: {chosenProject, setChosenProject},
-        tabsOptionsObject: {tabsOptions, setTabsOptions},
+        sortingOptionObject: { sortingOptions, setSortingOptions },
+        openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown },
+        sortingDropDownPositionsObject: { sortingDropDownPositions, setSortingDropDownPositions },
+        chosenProjectObject: { chosenProject, setChosenProject },
+        tabsOptionsObject: { tabsOptions, setTabsOptions },
         projectsDropDownPositionsObject: {
           projectsDropDownPositions,
-          setProjectsDropDownPositions
+          setProjectsDropDownPositions,
         },
         openProjectsDropDownObject: {
           openProjectsDropDown,
-          setOpenProjectsDropDown
-        }
+          setOpenProjectsDropDown,
+        },
+        openTasksWindowObject: {
+          openTasksWindow,
+          setOpenTasksWindow,
+        },
+        allTasksObject: {
+          allTasks,
+          setAllTasks,
+        },
       }}
     >
       {children}

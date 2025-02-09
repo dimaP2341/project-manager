@@ -10,17 +10,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 export default function TasksList() {
   const {
-    chosenProjectObject: {chosenProject},
-    allProjectsObject: {allProjects},
-    tabsOptionsObject: {tabsOptions}
+    chosenProjectObject: { chosenProject },
+    allProjectsObject: { allProjects },
+    tabsOptionsObject: { tabsOptions },
+    allTasksObject: { allTasks, setAllTasks },
   } = useContextApp()
-
-  const [allTasks, setAllTasks] = useState<Task[]>([])
-
-  useEffect(() => {
-    const extractAllTasks = allProjects.flatMap((project) => project.tasks)
-    setAllTasks(extractAllTasks)
-  }, [allProjects])
 
   const filteredTasks = useMemo(() => {
     let tasks = allTasks
@@ -30,9 +24,9 @@ export default function TasksList() {
     }
 
     if (tabsOptions[1].isSelected) {
-      tasks = tasks.filter((task) => task.status === "Completed")
+      tasks = tasks.filter((task) => task.status === 'Completed')
     } else {
-      tasks = tasks.filter((task) => task.status === "In progress")
+      tasks = tasks.filter((task) => task.status === 'In progress')
     }
 
     return tasks
@@ -52,22 +46,24 @@ export default function TasksList() {
 
 function Tabs() {
   const {
-    chosenProjectObject: {chosenProject}, 
-    allProjectsObject: {allProjects},
-    tabsOptionsObject: {tabsOptions, setTabsOptions}
+    chosenProjectObject: { chosenProject },
+    allProjectsObject: { allProjects },
+    tabsOptionsObject: { tabsOptions, setTabsOptions },
   } = useContextApp()
 
   function countOnGoingTasks() {
     if (chosenProject) {
       return chosenProject.tasks.reduce((accTask, task) => {
-        return accTask + (task.status === "In progress" ? 1 : 0)
+        return accTask + (task.status === 'In progress' ? 1 : 0)
       }, 0)
     }
 
     return allProjects.reduce((accProjects, project) => {
-      return (accProjects + project.tasks.reduce((accTasks, task) => {
-        return accTasks + (task.status === "In progress" ? 1 : 0)
-      }, 0)
+      return (
+        accProjects +
+        project.tasks.reduce((accTasks, task) => {
+          return accTasks + (task.status === 'In progress' ? 1 : 0)
+        }, 0)
       )
     }, 0)
   }
@@ -85,25 +81,40 @@ function Tabs() {
   }
 
   function switchTabs(index: number) {
-    setTabsOptions((prev) => prev.map((tab, i) => ({
-      ...tab,
-      isSelected: index === i
-    })))
+    setTabsOptions((prev) =>
+      prev.map((tab, i) => ({
+        ...tab,
+        isSelected: index === i,
+      })),
+    )
   }
 
   return (
     <div className="flex items-center gap-6 ml-3 mt-8 mb-5">
       {tabsOptions.map((singleTabOption, index) => (
-        <div key={index} onClick={() => switchTabs(index)} className={`flex gap-2 cursor-pointer ${singleTabOption.isSelected ? "text-orange-600 font-semibold" : "text-slate-300"}`}>
+        <div
+          key={index}
+          onClick={() => switchTabs(index)}
+          className={`flex gap-2 cursor-pointer ${singleTabOption.isSelected ? 'text-orange-600 font-semibold' : 'text-slate-300'}`}
+        >
           <span>{singleTabOption.name}</span>
-          <span className={`${singleTabOption.isSelected ? "bg-orange-600" : "bg-slate-300"} text-white px-2 rounded-md max-[420px]:hidden`}>{singleTabOption.id === 1 ? countOnGoingTasks() : completedTasks()}</span>
+          <span
+            className={`${singleTabOption.isSelected ? 'bg-orange-600' : 'bg-slate-300'} text-white px-2 rounded-md max-[420px]:hidden`}
+          >
+            {singleTabOption.id === 1 ? countOnGoingTasks() : completedTasks()}
+          </span>
         </div>
       ))}
     </div>
   )
 }
 
-function SingleTask() {
+function SingleTask({ task }: { task: Task }) {
+  const {
+    selectedTasksObject: { setSelectedTask },
+    openTasksWindowObject: { setOpenTasksWindow },
+  } = useContextApp()
+
   return (
     <div className="flex gap-1 items-center bg-white rounded-lg border border-slate-100 px-6 max-sm:px-2">
       <CheckBox />
@@ -114,13 +125,17 @@ function SingleTask() {
               <ListOutlined />
             </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-bold hover:text-orange-600 cursor-pointer max-sm:text-sm">
-              Create the UI Design of the task
-            </span>
+          <div
+            onClick={() => {
+              setSelectedTask(task)
+              setOpenTasksWindow(true)
+            }}
+            className="flex flex-col"
+          >
+            <span className="font-bold hover:text-orange-600 cursor-pointer max-sm:text-sm">{task.title}</span>
           </div>
           <div className="flex">
-            <span className="text-slate-400 text-[13px] p-[2px]">Project</span>
+            <span className="text-slate-400 text-[13px] p-[2px]">{task.projectName}</span>
           </div>
         </div>
       </div>

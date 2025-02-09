@@ -1,4 +1,4 @@
-import { Project } from '@/app/Data/AllProjects'
+import { Project, Task } from '@/app/Data/AllProjects'
 import { SortingDropDownPosition } from '@/app/Types/AppType'
 import { useContextApp } from '@/app/contextApp'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -60,6 +60,7 @@ export function TasksWindow() {
     formState: { errors },
     reset,
     setFocus,
+    setError,
   } = useForm<FormData>({ resolver: zodResolver(schema) })
   const [clickedSelection, setClickedSelection] = useState<SelectionOption | null>(null)
   const [openTasksDropDown, setOpenTasksDropDown] = useState(false)
@@ -94,6 +95,8 @@ export function TasksWindow() {
   const {
     allProjectsObject: { allProjects, setAllProjects },
     openTasksWindowObject: { openTasksWindow, setOpenTasksWindow },
+    chosenProjectObject: { chosenProject, setChosenProject },
+    allTasksObject: { allTasks, setAllTasks },
   } = useContextApp()
 
   const [updateAllProjects, setUpdateAllProjects] = useState<ProjectWithSelection[] | null>([])
@@ -135,7 +138,24 @@ export function TasksWindow() {
     },
   ])
 
+  const [isLoading, setIsLoading] = useState(false)
   const onSubmit: SubmitHandler<FormData> = (data) => {
+    if (project) {
+      const findProject = updateAllProjects?.find((proj) => proj.id === project.id)
+
+      const findTask = findProject?.tasks.find((task) => task.title.toLowerCase() === data.taskName.toLocaleLowerCase())
+
+      if (findTask) {
+        setError('taskName', {
+          type: 'manual',
+          message: 'task already exists',
+        })
+
+        setFocus('taskName')
+        return
+      }
+    }
+
     const newErrors = selectionErrors.map((error) => {
       if (error.label === 'priority' && !priority) {
         return { ...error, show: true }
@@ -149,10 +169,53 @@ export function TasksWindow() {
     })
 
     if (newErrors.every((err) => err.show === false)) {
-      console.log('success')
+      tasksFunction(data)
     }
 
     setSelectionErrors(newErrors)
+  }
+
+  async function tasksFunction(data: FormData) {
+    try {
+      setIsLoading(true)
+
+      await new Promise((res) => setTimeout(res, 1000))
+
+      addNewTask(data)
+    } catch (err) {
+    } finally {
+      setIsLoading(false)
+      setOpenTasksWindow(false)
+    }
+  }
+
+  function addNewTask(data: FormData) {
+    const newTask: Task = {
+      id: uuidv4(),
+      title: data.taskName,
+      icon: selectedIcon ? selectedIcon.name : 'MenuBook',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      priority: priority ? priority?.name : 'Low',
+      projectName: project?.title || '',
+      status: 'In progress',
+    }
+
+    const updateAllProjects = allProjects.map((proj) => ({
+      ...proj,
+      tasks: proj.id === project?.id ? [...proj.tasks, newTask] : [...proj.tasks],
+    }))
+
+    if (chosenProject && chosenProject.id === project?.id) {
+      const copyChosenProject: Project = {
+        ...chosenProject,
+        tasks: [...chosenProject.tasks, newTask],
+      }
+      setChosenProject(copyChosenProject)
+    }
+
+    setAllTasks([...allTasks, newTask])
+    setAllProjects(updateAllProjects)
   }
 
   return (
@@ -200,7 +263,13 @@ export function TasksWindow() {
 }
 
 function PrioritySelection() {
-  const { setClickedSelection, setOpenTasksDropDown, setTasksDropDownPositions, priority } = useTaskFormContext()
+  const {
+    setClickedSelection,
+    setOpenTasksDropDown,
+    setTasksDropDownPositions,
+    priority,
+    selectionErrorsObject: { selectionErrors, setSelectionErrors },
+  } = useTaskFormContext()
 
   const prioritySelectionRef = useRef<HTMLDivElement>(null)
 
