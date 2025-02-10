@@ -1,3 +1,4 @@
+import { allIconsArray } from '@/app/Data/AllIcons'
 import { Project, Task } from '@/app/Data/AllProjects'
 import { SortingDropDownPosition } from '@/app/Types/AppType'
 import { useContextApp } from '@/app/contextApp'
@@ -63,6 +64,7 @@ export function TasksWindow() {
     reset,
     setFocus,
     setError,
+    setValue,
   } = useForm<FormData>({ resolver: zodResolver(schema) })
   const [clickedSelection, setClickedSelection] = useState<SelectionOption | null>(null)
   const [openTasksDropDown, setOpenTasksDropDown] = useState(false)
@@ -99,6 +101,7 @@ export function TasksWindow() {
     openTasksWindowObject: { openTasksWindow, setOpenTasksWindow },
     chosenProjectObject: { chosenProject, setChosenProject },
     allTasksObject: { allTasks, setAllTasks },
+    selectedTasksObject: { setSelectedTask, selectedTask },
   } = useContextApp()
 
   const [updateAllProjects, setUpdateAllProjects] = useState<ProjectWithSelection[] | null>([])
@@ -113,10 +116,34 @@ export function TasksWindow() {
   }, [allProjects])
 
   useLayoutEffect(() => {
-    reset()
+    if (!selectedTask) {
+      reset()
 
-    setPriority(null)
-    setProject(null)
+      setPriority(null)
+      setProject(null)
+    } else {
+      setValue('taskName', selectedTask.title)
+
+      const getPriority = priorityList.find((priority) => priority.name === selectedTask.priority)
+
+      if (getPriority) {
+        setPriority(getPriority)
+      }
+
+      const getProject = updateAllProjects.find(
+        (proj) => proj.title.toLowerCase() === selectedTask.projectName.toLowerCase(),
+      )
+
+      if (getProject) {
+        setProject(getProject)
+      }
+
+      const findIconAllIconsArray = allIconsArray.find((icon) => icon.name === selectedTask.icon)
+
+      if (findIconAllIconsArray) {
+        setSelectedIcon(findIconAllIconsArray)
+      }
+    }
 
     setTimeout(() => {
       setFocus('taskName')
@@ -189,35 +216,67 @@ export function TasksWindow() {
       setIsLoading(false)
       setOpenTasksWindow(false)
     }
-  }
 
-  function addNewTask(data: FormData) {
-    const newTask: Task = {
-      id: uuidv4(),
-      title: data.taskName,
-      icon: selectedIcon ? selectedIcon.name : 'MenuBook',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      priority: priority ? priority?.name : 'Low',
-      projectName: project?.title || '',
-      status: 'In progress',
-    }
-
-    const updateAllProjects = allProjects.map((proj) => ({
-      ...proj,
-      tasks: proj.id === project?.id ? [...proj.tasks, newTask] : [...proj.tasks],
-    }))
-
-    if (chosenProject && chosenProject.id === project?.id) {
-      const copyChosenProject: Project = {
-        ...chosenProject,
-        tasks: [...chosenProject.tasks, newTask],
+    function addNewTask(data: FormData) {
+      const newTask: Task = {
+        id: uuidv4(),
+        title: data.taskName,
+        icon: selectedIcon ? selectedIcon.name : 'MenuBook',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        priority: priority ? priority?.name : 'Low',
+        projectName: project?.title || '',
+        status: 'In progress',
       }
-      setChosenProject(copyChosenProject)
+
+      const updateAllProjects = allProjects.map((proj) => ({
+        ...proj,
+        tasks: proj.id === project?.id ? [...proj.tasks, newTask] : [...proj.tasks],
+      }))
+
+      if (chosenProject && chosenProject.id === project?.id) {
+        const copyChosenProject: Project = {
+          ...chosenProject,
+          tasks: [...chosenProject.tasks, newTask],
+        }
+        setChosenProject(copyChosenProject)
+      }
+
+      setAllTasks([...allTasks, newTask])
+      setAllProjects(updateAllProjects)
     }
 
-    setAllTasks([...allTasks, newTask])
-    setAllProjects(updateAllProjects)
+    function updateTask() {
+      const updateTask: Task = {
+        ...selectedTask,
+        title: data.taskName,
+        icon: selectedIcon.name || 'LibraryBooksIcon',
+        status: selectedTask.status,
+        projectName: project?.title || '',
+        priority: priority?.name || 'Low',
+        updatedAt: new Date().toISOString(),
+      }
+
+      const updatedProjects = allProjects.map((proj) => {
+        if (proj.title === updateTask.projectName) {
+          const taskExists = proj.tasks.some((task) => task.id === updateTask.id)
+
+          if (taskExists) {
+            return {
+              ...proj,
+              tasks: proj.tasks.map((task) => (task.id === updateTask.id ? updateTask : task)),
+            }
+          } else {
+            return { ...proj, tasks: [...proj.tasks, updateTask] }
+          }
+        } else {
+          return {
+            ...proj,
+            tasks: proj.tasks.filter((task) => task.id !== updateTask.id),
+          }
+        }
+      })
+    }
   }
 
   return (
@@ -258,6 +317,7 @@ export function TasksWindow() {
             <PrioritySelection />
             <PrioritySelection />
           </div>
+          <Footer isLoading={isLoading} />
         </form>
       </div>
     </TaskFormContext.Provider>
@@ -363,6 +423,37 @@ function Header() {
           setSelectedTask(null)
         }}
       />
+    </div>
+  )
+}
+
+function Footer({ isLoading }: { isLoading: boolean }) {
+  const {
+    openTasksWindowObject: { setOpenTasksWindow },
+    selectedIconObject: { setSelectedIcon },
+    selectedTasksObject: { setSelectedTask, selectedTask },
+  } = useContextApp()
+
+  return (
+    <div className="w-[102%] p-[12px] mt-8 mb-4 flex gap-3 justify-end items-center">
+      <button
+        onClick={() => {
+          setOpenTasksWindow(false)
+          setSelectedTask(null)
+          setSelectedIcon(null)
+        }}
+        type="button"
+        className="border border-slate-200 text-slate-400 text-[13px] p-2 px-6 rounded-md hover:border-slate-100 transition-all"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        className="bg-orange-600 hover:bg-orange-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
+      >
+        {isLoading ? 'Saving...' : selectedTask ? 'Edit' : 'AddTask'}
+      </button>
     </div>
   )
 }
