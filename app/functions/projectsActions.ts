@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react'
-import { Project } from '../Data/AllProjects'
+import { Project, Task } from '../Data/AllProjects'
 import { IconData } from '../Types/AppType'
 import { v4 as uuidv4 } from 'uuid'
 import { FormData } from '../Components/Windows/ProjectWindow'
@@ -28,9 +28,15 @@ export function addNewProject(
   } catch (err) {}
 }
 
-export function deleteProject(selectedProject: Project | null, setSelectedProject: Dispatch<SetStateAction<Project | null>>, allProjects: Project[], setAllProjects: Dispatch<SetStateAction<Project[]>>, setOpenProjectWindow: Dispatch<SetStateAction<boolean>>) {
+export function deleteProject(
+  selectedProject: Project | null,
+  setSelectedProject: Dispatch<SetStateAction<Project | null>>,
+  allProjects: Project[],
+  setAllProjects: Dispatch<SetStateAction<Project[]>>,
+  setOpenProjectWindow: Dispatch<SetStateAction<boolean>>,
+) {
   if (selectedProject) {
-    const updateAllProjects = allProjects.filter(project => project.id !== selectedProject.id)
+    const updateAllProjects = allProjects.filter((project) => project.id !== selectedProject.id)
 
     setAllProjects(updateAllProjects)
     setSelectedProject(null)
@@ -38,16 +44,26 @@ export function deleteProject(selectedProject: Project | null, setSelectedProjec
   }
 }
 
-export function editProject(selectedProject: Project | null, setSelectedProject: Dispatch<SetStateAction<Project | null>>, data: FormData, selectedIcon: IconData | null, allProjects: Project[], setAllProjects: Dispatch<SetStateAction<Project[]>>, setOpenConfirmationWindow: Dispatch<SetStateAction<boolean>>) {
+export function editProject(
+  selectedProject: Project | null,
+  setSelectedProject: Dispatch<SetStateAction<Project | null>>,
+  data: FormData,
+  selectedIcon: IconData | null,
+  allProjects: Project[],
+  allTasks: Task[],
+  setAllTasks: Dispatch<SetStateAction<Task[]>>,
+  setAllProjects: Dispatch<SetStateAction<Project[]>>,
+  setOpenConfirmationWindow: Dispatch<SetStateAction<boolean>>,
+) {
   if (selectedProject) {
     const updateProject: Project = {
       ...selectedProject,
       title: data.projectName,
-      icon: selectedIcon?.name || "LocalLibrary",
+      icon: selectedIcon?.name || 'LocalLibrary',
       tasks: selectedProject.tasks.map((task) => ({
         ...task,
-        projectName: data.projectName
-      }))
+        projectName: data.projectName,
+      })),
     }
 
     const updateAllProjects = allProjects.map((project) => {
@@ -58,6 +74,11 @@ export function editProject(selectedProject: Project | null, setSelectedProject:
       return project
     })
 
+    const updateAllTasks = allTasks.map((task) =>
+      task.projectName === selectedProject.title ? { ...task, projectName: data.projectName } : task,
+    )
+
+    setAllTasks(updateAllTasks)
     setAllProjects(updateAllProjects)
     setSelectedProject(null)
     setOpenConfirmationWindow(false)

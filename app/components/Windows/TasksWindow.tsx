@@ -210,7 +210,49 @@ export function TasksWindow() {
 
       await new Promise((res) => setTimeout(res, 1000))
 
-      addNewTask(data)
+      if (!selectedTask) {
+        const newTask: Task = {
+          id: uuidv4(),
+          title: data.taskName,
+          icon: selectedIcon ? selectedIcon.name : 'MenuBook',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          priority: priority ? priority?.name : 'Low',
+          projectName: project?.title || '',
+          status: 'In progress',
+        }
+
+        addNewTask(
+          newTask,
+          allProjects,
+          setAllProjects,
+          chosenProject,
+          setChosenProject,
+          allTasks,
+          setAllTasks,
+          project,
+        )
+      } else {
+        const updateTask: Task = {
+          ...selectedTask,
+          title: data.taskName,
+          icon: selectedIcon.name || 'LibraryBooksIcon',
+          status: selectedTask.status,
+          projectName: project?.title || '',
+          priority: priority?.name || 'Low',
+          updatedAt: new Date().toISOString(),
+        }
+
+        updateTaskAndProjects({
+          updateTask,
+          project,
+          allProjects,
+          chosenProject,
+          setAllTasks,
+          setChosenProject,
+          setAllProjects,
+        })
+      }
     } catch (err) {
     } finally {
       setIsLoading(false)
@@ -218,17 +260,6 @@ export function TasksWindow() {
     }
 
     function addNewTask(data: FormData) {
-      const newTask: Task = {
-        id: uuidv4(),
-        title: data.taskName,
-        icon: selectedIcon ? selectedIcon.name : 'MenuBook',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        priority: priority ? priority?.name : 'Low',
-        projectName: project?.title || '',
-        status: 'In progress',
-      }
-
       const updateAllProjects = allProjects.map((proj) => ({
         ...proj,
         tasks: proj.id === project?.id ? [...proj.tasks, newTask] : [...proj.tasks],
@@ -247,16 +278,6 @@ export function TasksWindow() {
     }
 
     function updateTask() {
-      const updateTask: Task = {
-        ...selectedTask,
-        title: data.taskName,
-        icon: selectedIcon.name || 'LibraryBooksIcon',
-        status: selectedTask.status,
-        projectName: project?.title || '',
-        priority: priority?.name || 'Low',
-        updatedAt: new Date().toISOString(),
-      }
-
       const updatedProjects = allProjects.map((proj) => {
         if (proj.title === updateTask.projectName) {
           const taskExists = proj.tasks.some((task) => task.id === updateTask.id)
