@@ -94,6 +94,8 @@ export default function ContextAppProvider({ children }: { children: React.React
 
   const [openTasksWindow, setOpenTasksWindow] = useState(false)
   const [allTasks, setAllTasks] = useState<Task[]>([])
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+  const [projectClicked, setProjectClicked] = useState<Project | null>(null)
 
   useEffect(() => {
     function handleResize() {
@@ -172,6 +174,10 @@ export default function ContextAppProvider({ children }: { children: React.React
         allTasksObject: {
           allTasks,
           setAllTasks,
+        },
+        selectedTaskObject: {
+          selectedTask,
+          setSelectedTask,
         },
         projectClickedObject: {
           projectClicked,

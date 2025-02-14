@@ -26,8 +26,8 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
   const {
     dropDownPositionObject: { setDropDownPositions },
     openDropDownObject: { setOpenDropDown },
-    selectedProjectObject: {setSelectedProject},
-    sideBarMenuObject: {setSideBarMenu}
+    selectedProjectObject: { setSelectedProject },
+    sideBarMenuObject: { setSideBarMenu },
   } = useContextApp()
 
   function openDropDown(e: MouseEvent) {
@@ -48,10 +48,11 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
 
   function showAllTasksOfProject() {
     setChosenProject(project)
-    setSideBarMenu((prevState) => prevState.map((item) => ({
-      ...item,
-      isSelected: item.id === 2 ? true : false,
-    }))
+    setSideBarMenu((prevState) =>
+      prevState.map((item) => ({
+        ...item,
+        isSelected: item.id === 2 ? true : false,
+      })),
     )
   }
   return (
@@ -79,6 +80,20 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
 }
 
 function ProjectCardBody({ project }: { project: Project }) {
+  const {
+    openTasksWindowObject: { setOpenTasksWindow },
+    projectClickedObject: { setProjectClicked },
+    allProjectsObject: { allProjects, setAllProjects },
+  } = useContextApp()
+  function openTheTaskWindow() {
+    setOpenTasksWindow(true)
+
+    const findProject = allProjects.find((proj) => proj.title.toLowerCase() === project.title.toLowerCase())
+
+    if (findProject) {
+      setProjectClicked(findProject)
+    }
+  }
   return (
     <div className="h-[80px] flex flex-col gap-3 mb-1">
       <ul className="text-slate-400 text-[13px] flex flex-col gap-2 ml-3">

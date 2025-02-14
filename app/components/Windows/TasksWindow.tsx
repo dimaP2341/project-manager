@@ -9,6 +9,7 @@ import KeyboardArrowDownOutlined from '@mui/icons-material/KeyboardArrowDownOutl
 import ListAltOutlined from '@mui/icons-material/ListAltOutlined'
 import { ReactNode, createContext, use, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FieldErrors, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 import { z } from 'zod'
 
 export type SelectionOption = 'priority' | 'project'
@@ -102,6 +103,7 @@ export function TasksWindow() {
     chosenProjectObject: { chosenProject, setChosenProject },
     allTasksObject: { allTasks, setAllTasks },
     selectedTasksObject: { setSelectedTask, selectedTask },
+    projectClickedOnject: { projectClicked, setProjectClicked },
   } = useContextApp()
 
   const [updateAllProjects, setUpdateAllProjects] = useState<ProjectWithSelection[] | null>([])
@@ -117,10 +119,20 @@ export function TasksWindow() {
 
   useLayoutEffect(() => {
     if (!selectedTask) {
+      if (projectClicked) {
+        setProject(projectClicked)
+        setUpdateAllProjects((prev) =>
+          prev.map((proj) => ({
+            ...proj,
+            isSelected: proj.id === projectClicked.id ? true : false,
+          })),
+        )
+      } else {
+        setProject(null)
+      }
       reset()
 
       setPriority(null)
-      setProject(null)
     } else {
       setValue('taskName', selectedTask.title)
 
@@ -255,8 +267,11 @@ export function TasksWindow() {
       }
     } catch (err) {
     } finally {
+      toast.success(`The task has been ${selectedTask ? 'edit' : 'added'} successfully`)
       setIsLoading(false)
       setOpenTasksWindow(false)
+      setSelectedTask(null)
+      setProjectClicked(null)
     }
 
     function addNewTask(data: FormData) {
@@ -422,6 +437,7 @@ function Header() {
   const {
     openTasksWindowObject: { setOpenTasksWindow },
     selectedTaskObject: { selectedTask, setSelectedTask },
+    projectClickedObject: { setProjectClicked },
   } = useContextApp()
 
   return (
@@ -431,7 +447,10 @@ function Header() {
           <ListAltOutlined
             sx={{ fontSize: '21px' }}
             className="text-orange-600"
-            onClick={() => setOpenTasksWindow(false)}
+            onClick={() => {
+              setOpenTasksWindow(false)
+              setProjectClicked(null)
+            }}
           />
         </div>
         <span className="font-semibold text-lg">{selectedTask ? 'Edit Task' : 'Add New Task'}</span>
@@ -453,6 +472,7 @@ function Footer({ isLoading }: { isLoading: boolean }) {
     openTasksWindowObject: { setOpenTasksWindow },
     selectedIconObject: { setSelectedIcon },
     selectedTasksObject: { setSelectedTask, selectedTask },
+    projectClickedObject: { setProjectClicked },
   } = useContextApp()
 
   return (
@@ -462,6 +482,7 @@ function Footer({ isLoading }: { isLoading: boolean }) {
           setOpenTasksWindow(false)
           setSelectedTask(null)
           setSelectedIcon(null)
+          setProjectClicked(null)
         }}
         type="button"
         className="border border-slate-200 text-slate-400 text-[13px] p-2 px-6 rounded-md hover:border-slate-100 transition-all"
