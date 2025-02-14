@@ -173,6 +173,10 @@ export default function ContextAppProvider({ children }: { children: React.React
           allTasks,
           setAllTasks,
         },
+        projectClickedObject: {
+          projectClicked,
+          setProjectClicked,
+        },
       }}
     >
       {children}

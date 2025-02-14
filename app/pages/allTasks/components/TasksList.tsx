@@ -1,12 +1,13 @@
-import { Task } from '@/app/Data/AllProjects'
+import { Project, Task } from '@/app/Data/AllProjects'
 import { useContextApp } from '@/app/contextApp'
 import CachedOutlined from '@mui/icons-material/CachedOutlined'
-import CheckBox from '@mui/icons-material/CheckBox'
 import CircleOutlined from '@mui/icons-material/CircleOutlined'
 import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined'
 import EditOutlined from '@mui/icons-material/EditOutlined'
 import ListOutlined from '@mui/icons-material/ListOutlined'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import AllProjects from '../../allProjects/AllProjects'
+import { Checkbox } from '@mui/material'
 
 export default function TasksList() {
   const {
@@ -111,13 +112,66 @@ function Tabs() {
 
 function SingleTask({ task }: { task: Task }) {
   const {
-    selectedTasksObject: { setSelectedTask },
+    selectedTaskObject: { setSelectedTask },
     openTasksWindowObject: { setOpenTasksWindow },
+    openConfirmationWindowObject: { setOpenConfirmWindow },
+    allProjectsObject: { allProjects, setAllProjects },
+    allTasksObject: { allTasks, setAllTasks },
+    chosenProjectObject: { chosenProject, setChosenProject },
   } = useContextApp()
+  const [checked, setChecked] = useState(false)
+  const priorityColors = {
+    Low: 'text-green-500',
+    Medium: 'text-yellow-500',
+    High: 'text-red-500',
+  }
+
+  useLayoutEffect(() => {
+    setChecked(task.status === 'Completed')
+  }, [task])
+
+  function updateStatus() {
+    const newStatus = checked ? 'In Progress' : 'Completed'
+
+    const updatedProjects: Project[] = allProjects.map((project) => ({
+      ...project,
+      tasks: project.tasks.map((t) => (t.id === task.id ? { ...t, status: newStatus } : t)),
+    }))
+
+    const updatedTasks = allTasks.map((t) => (t.id === task.id ? { ...t, status: newStatus } : t))
+
+    if (chosenProject) {
+      const updateChosenProject: Project = {
+        ...chosenProject,
+        tasks: chosenProject.tasks.map((t) => {
+          if (task.id === t.id) {
+            return { ...t, status: newStatus }
+          }
+
+          return t
+        }),
+      }
+
+      setChosenProject(updateChosenProject)
+    }
+
+    setAllProjects(updatedProjects)
+    setAllTasks(updatedTasks)
+    setChecked(!checked)
+  }
 
   return (
     <div className="flex gap-1 items-center bg-white rounded-lg border border-slate-100 px-6 max-sm:px-2">
-      <CheckBox />
+      <Checkbox
+        sx={{
+          color: 'orangered',
+          '&.Mui-checked': {
+            color: 'orange',
+          },
+        }}
+        onClick={updateStatus}
+        checked={checked}
+      />
       <div className="w-full flex gap-3 items-center justify-between p-5 py-6 max-sm:p-4">
         <div className="flex gap-3 items-center">
           <div>
@@ -147,8 +201,8 @@ function SingleTask({ task }: { task: Task }) {
         </div>
 
         <div className="flex gap-2 items-center max-sm:hidden">
-          <CircleOutlined className="text-[10px] text-green-600" />
-          <span className="text-[14px] text-slate-400">Low</span>
+          <CircleOutlined className={`text-[10px] ${priorityColors[task.priority]} `} />
+          <span className="text-[14px] text-slate-400">{task.priority}</span>
         </div>
 
         <div className="flex gap-2 items-center">
