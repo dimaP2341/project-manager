@@ -32,11 +32,11 @@ function SingleProject({ singleProject, index }: { singleProject: ProjectWithSel
   return (
     <div
       onClick={() => updateTheProjectState(index)}
-      className={`${singleProject.isSelected && 'bg-orange-50 border border-orange-200'} flex items-center gap-2 p-[7px] rounded-md cursor-pointer`}
+      className={`${singleProject.isSelected && 'bg-royal-blue-50 border border-royal-blue-200'} flex items-center gap-2 p-[7px] rounded-md cursor-pointer`}
     >
       <div className={`flex gap-2 items-center`}>
-        <div>{getIconComponent(singleProject.icon, 'text-orange-600', '22px')} </div>
-        <span className="mt-[3px] hover:text-orange-600 text-slate-500">{singleProject.title}</span>
+        <div>{getIconComponent(singleProject.icon, 'text-royal-blue-600', '22px')} </div>
+        <span className="mt-[3px] hover:text-royal-blue-600 text-slate-500">{singleProject.title}</span>
       </div>
     </div>
   )

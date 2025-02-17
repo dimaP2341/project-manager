@@ -492,7 +492,7 @@ function Footer({ isLoading }: { isLoading: boolean }) {
 
       <button
         type="submit"
-        className="bg-orange-600 hover:bg-orange-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
+        className="bg-royal-blue-600 hover:bg-royal-blue-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
       >
         {isLoading ? 'Saving...' : selectedTask ? 'Edit' : 'AddTask'}
       </button>

@@ -96,8 +96,8 @@ export type AppType = {
     setOpenConfirmWindow: Dispatch<SetStateAction<boolean>>
   }
 
-  sortingOptionObject: {
-    sortingOptions: SortingOption[]
+  sortingOptionsProjectObject: {
+    sortingOptionsProject: SortingOption[]
     setSortingOptions: Dispatch<SetStateAction<SortingOption[]>>
   }
 
@@ -139,5 +139,13 @@ export type AppType = {
   allTasksObject: {
     allTasks: Task[]
     setAllTasks: Dispatch<SetStateAction<Task[]>>
+  }
+  selectedTaskObject: {
+    selectedTask: Task | null
+    setSelectedTask: Dispatch<SetStateAction<Task | null>>
+  }
+  projectClickedObject: {
+    projectClicked: Project | null
+    setProjectClicked: Dispatch<SetStateAction<Project | null>>
   }
 }

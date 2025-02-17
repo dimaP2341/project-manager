@@ -10,13 +10,13 @@ export default function SortingDropDown() {
     allTasksObject: { allTasks, setAllTasks },
     openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown },
     sortingOptionsProjectObject: { sortingOptionsProject, setSortingOptionsProject },
-    sortingOptionsTaskObject: {sortingOptionsTask, setSortingOptionsTask},
+    sortingOptionsTaskObject: { sortingOptionsTask, setSortingOptionsTask },
     sortingDropDownPositionsObject: { sortingDropDownPositions },
   } = useContextApp()
 
   const dropDownRef = useRef<HTMLDivElement>(null)
 
-  const sortingOptionArray = sideBarMenu[0].isSelected ? sorting
+  const sortingOptionArray = sideBarMenu[0].isSelected
 
   const sortAllProjects = useCallback(() => {
     const currentSortingOption = sortingOptionsProject
@@ -142,7 +142,7 @@ export default function SortingDropDown() {
               <div key={optionIndex}>
                 <span
                   onClick={() => handleOptionSelected(categoryIndex, optionIndex)}
-                  className={`${option.selected ? 'text-orange-600' : 'text-slate-500'} cursor-pointer hover:text-orange-600`}
+                  className={`${option.selected ? 'text-royal-blue-600' : 'text-slate-500'} cursor-pointer hover:text-royal-blue-600`}
                 >
                   {option.label}
                 </span>

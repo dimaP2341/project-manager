@@ -6,9 +6,9 @@ import React, { useEffect, useRef, useState } from 'react'
 export default function MoreDropDown() {
   const {
     openDropDownObject: { setOpenDropDown, openDropDown },
-    dropDownPositionObject: {setDropDownPositions, dropDownPositions},
-    selectedProjectObject: {setSelectedProject},
-    openConfirmationWindowObject: {setOpenConfirmWindow}
+    dropDownPositionObject: { setDropDownPositions, dropDownPositions },
+    selectedProjectObject: { setSelectedProject },
+    openConfirmationWindowObject: { setOpenConfirmWindow },
   } = useContextApp()
 
   const [dropDownOptions, setDropDownOptions] = useState([
@@ -26,7 +26,7 @@ export default function MoreDropDown() {
     if (id === 2) {
       setOpenConfirmWindow(true)
     }
-    
+
     setOpenDropDown(false)
   }
 
@@ -60,7 +60,7 @@ export default function MoreDropDown() {
         <div
           key={dropDownOption.id}
           onClick={() => clickedItemHandler(dropDownOption.id)}
-          className={`flex gap-1 items-center text-slate-400 cursor-pointer hover:text-orange-600 ${
+          className={`flex gap-1 items-center text-slate-400 cursor-pointer hover:text-royal-blue-600 ${
             dropDownOption.id === 2 && 'hover:text-red-600'
           }`}
         >

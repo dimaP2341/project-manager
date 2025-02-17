@@ -96,11 +96,11 @@ function Tabs() {
         <div
           key={index}
           onClick={() => switchTabs(index)}
-          className={`flex gap-2 cursor-pointer ${singleTabOption.isSelected ? 'text-orange-600 font-semibold' : 'text-slate-300'}`}
+          className={`flex gap-2 cursor-pointer ${singleTabOption.isSelected ? 'text-royal-blue-600 font-semibold' : 'text-slate-300'}`}
         >
           <span>{singleTabOption.name}</span>
           <span
-            className={`${singleTabOption.isSelected ? 'bg-orange-600' : 'bg-slate-300'} text-white px-2 rounded-md max-[420px]:hidden`}
+            className={`${singleTabOption.isSelected ? 'bg-royal-blue-600' : 'bg-slate-300'} text-white px-2 rounded-md max-[420px]:hidden`}
           >
             {singleTabOption.id === 1 ? countOnGoingTasks() : completedTasks()}
           </span>
@@ -175,7 +175,7 @@ function SingleTask({ task }: { task: Task }) {
       <div className="w-full flex gap-3 items-center justify-between p-5 py-6 max-sm:p-4">
         <div className="flex gap-3 items-center">
           <div>
-            <div className="bg-orange-200 rounded-lg p-2 flex items-center justify-center">
+            <div className="bg-royal-blue-200 rounded-lg p-2 flex items-center justify-center">
               <ListOutlined />
             </div>
           </div>
@@ -186,7 +186,7 @@ function SingleTask({ task }: { task: Task }) {
             }}
             className="flex flex-col"
           >
-            <span className="font-bold hover:text-orange-600 cursor-pointer max-sm:text-sm">{task.title}</span>
+            <span className="font-bold hover:text-royal-blue-600 cursor-pointer max-sm:text-sm">{task.title}</span>
           </div>
           <div className="flex">
             <span className="text-slate-400 text-[13px] p-[2px]">{task.projectName}</span>
@@ -207,7 +207,7 @@ function SingleTask({ task }: { task: Task }) {
 
         <div className="flex gap-2 items-center">
           <div className="rounded-lg p-2 flex items-center justify-center cursor-pointer bg-orange-200 hover:bg-orange-300 transition-all">
-            <EditOutlined sx={{ fontSize: '17px' }} className="text-orange-600" />
+            <EditOutlined sx={{ fontSize: '17px' }} className="text-royal-blue-600" />
           </div>
           <div className="rounded-lg p-2 flex items-center justify-center cursor-pointer bg-slate-200 hover:bg-slate-300">
             <DeleteOutlineOutlined sx={{ fontSize: '17px' }} className="text-slate-600" />

@@ -39,7 +39,7 @@ export default function ProjectsDropDown() {
   return (
     <div
       ref={dropDownRef}
-      className={`bg-white absolute p-3 top-12 left-44 z-[90] border w-[210px] border-slate-50 select-none shadow-md rounded-lg flex flex-col gap-2`}
+      className={`bg-white absolute p-3 top-12 left-44 z-[90] border w-[210px] border-slate-50 select-none shadow-md rounded-lg flex flex-col gap-2 ${openProjectsDropDown ? 'block' : 'hidden'}`}
     >
       <AllProjectsItem />
       <hr className="w-[80%] text-slate-400 mx-auto my-1 opacity-55"></hr>
@@ -67,9 +67,9 @@ function AllProjectsItem() {
     >
       <div className="flex gap-2 items-center">
         <div>
-          <DensitySmallOutlined className="text-orange-600 text-[22px]" />
+          <DensitySmallOutlined className="text-royal-blue-600 text-[22px]" />
         </div>
-        <span className="text-[13px] mt-1 hover:text-orange-600 cursor-pointer">All Projects</span>
+        <span className="text-[13px] mt-1 hover:text-royal-blue-600 cursor-pointer">All Projects</span>
       </div>
     </div>
   )
@@ -95,13 +95,13 @@ function SingleProject({ singleProject }: { singleProject: Project }) {
   return (
     <div
       onClick={() => handleTheProjectClicked(singleProject.id)}
-      className={`flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer ${chosenProject?.id === singleProject.id && 'border border-orange-600 bg-orange-50'}`}
+      className={`flex items-center justify-between gap-7 p-2 rounded-lg text-slate-600 cursor-pointer ${chosenProject?.id === singleProject.id && 'border border-royal-blue-600 bg-royal-blue-50'}`}
     >
       <div className="flex gap-2 items-center">
         {' '}
         {/* {getIconComponent(singleProject.icon, "text-orange-600", "22px")}{" "} */}
       </div>
-      <span className="text-[13px] mt-1 hover:text-orange-600 cursor-pointer">{singleProject.title}</span>
+      <span className="text-[13px] mt-1 hover:text-royal-blue-600 cursor-pointer">{singleProject.title}</span>
     </div>
   )
 }

@@ -52,7 +52,7 @@ function Profile() {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="w-8 h-8 bg-orange-600 rounded-md"></div>
+      <div className="w-8 h-8 bg-royal-blue-600 rounded-md"></div>
       {openSideBar && (
         <ul>
           <li className="font-bold text-[14px]">Ali Ounassi</li>
@@ -69,7 +69,7 @@ function Logo() {
   } = useContextApp()
   return (
     <div className="rounded-md w-10 h-10 flex items-center justify-center">
-      <TaskAltOutlined className="text-orange-600 font-bold text-4xl" />
+      <TaskAltOutlined className="text-royal-blue-600 font-bold text-4xl" />
 
       {openSideBar && (
         <div className="text-xl flex items-center gap-1">
@@ -120,11 +120,13 @@ function Menu() {
           >
             <IconComponent
               sx={{ fontSize: '25px' }}
-              className={`${menuItem.isSelected ? 'text-orange-600' : 'text-slate-300'}`}
+              className={`${menuItem.isSelected ? 'text-royal-blue-600' : 'text-slate-300'}`}
             />
 
             {openSideBar && (
-              <span className={`${menuItem.isSelected ? 'text-orange-600' : 'text-slate-300'}`}>{menuItem.name}</span>
+              <span className={`${menuItem.isSelected ? 'text-royal-blue-600' : 'text-slate-300'}`}>
+                {menuItem.name}
+              </span>
             )}
           </div>
         )

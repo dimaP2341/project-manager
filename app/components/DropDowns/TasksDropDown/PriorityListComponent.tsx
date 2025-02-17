@@ -28,8 +28,8 @@ function SinglePriority({singlePriority, index}: {singlePriority: Priority, inde
         setOpenTasksDropDown(false)
     }
 
-    return <div onClick={() => updateThePriority(index)} className={`${singlePriority.isSelected && "bg-orange-50 border border-orange-200"} flex items-center gap-2 p-[7px] rounded-md cursor-pointer`}>
+    return <div onClick={() => updateThePriority(index)} className={`${singlePriority.isSelected && "bg-orange-50 border border-royal-blue-200"} flex items-center gap-2 p-[7px] rounded-md cursor-pointer`}>
         <div>{singlePriority.icon}</div>
-        <p className='text-slate-500 hover:text-orange-600 text-[14px]'>{singlePriority.name}</p>
+        <p className='text-slate-500 hover:text-royal-blue-600 text-[14px]'>{singlePriority.name}</p>
     </div>
 }

@@ -29,8 +29,8 @@ export default function Home() {
 
   return (
     <div className="flex w-full h-screen poppins">
-      <ProjectsDropDown />
       <Toaster />
+      <ProjectsDropDown />
       <ConfirmationWindow />
       <MoreDropDown />
       <ProjectWindow />

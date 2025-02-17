@@ -58,7 +58,7 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-3 items-center">
-        <div className="bg-orange-600 flex justify-center items-center w-[38px] h-[38px] rounded-md">
+        <div className="bg-royal-blue-600 flex justify-center items-center w-[38px] h-[38px] rounded-md">
           <SplitscreenOutlined className="text-white text-xl" />
         </div>
         <div className="flex flex-col">
@@ -119,7 +119,7 @@ function ProjectCardFooter() {
     <div className="flex gap-4 flex-col mt-2">
       <div className="text-[12px] gap-3 items-center flex overflow-hidden">
         <div className="w-full h-[7px] rounded-xl bg-slate-100 overflow-hidden">
-          <div className="w-1/2 bg-orange-600 h-full rounded-r-xl"></div>
+          <div className="w-1/2 bg-royal-blue-600 h-full rounded-r-xl"></div>
         </div>
       </div>
       <div className="flex justify-between">
