@@ -36,7 +36,7 @@ export default function SideBar() {
     <div
       className={` ${
         openSideBar ? 'w-[280px] fixed shadow-xl' : 'w-[97px] max-[940px]:hidden'
-      } h-screen py-10 bg-white flex flex-col items-center justify-between z-50 transition-all `}
+      } h-screen py-10 bg-white flex flex-col items-center justify-between z-[60] transition-all `}
     >
       <Logo />
       <Menu />

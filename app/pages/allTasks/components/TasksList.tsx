@@ -31,7 +31,7 @@ export default function TasksList() {
     }
 
     return tasks
-  }, [allTasks, chosenProject, tabsOptions])
+  }, [allTasks, chosenProject, tabsOptions, allTasks])
 
   return (
     <div className="ml-12 mt-11 flex flex-col gap-4 max-sm:ml-0">

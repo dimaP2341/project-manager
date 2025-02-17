@@ -13,7 +13,7 @@ export default function ConfirmationWindow() {
     openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
     selectedProjectObject: { setSelectedProject, selectedProject },
     allProjectsObject: { allProjects, setAllProjects },
-    allTasksObject: {allTasks, setAllTasks}
+    allTasksObject: { allTasks, setAllTasks },
     chosenProjectObject: { setChosenProject, chosenProject },
     selectedTaskObject: { selectedTask, setSelectedTask },
   } = useContextApp()
@@ -32,7 +32,7 @@ export default function ConfirmationWindow() {
       if (selectedProject) {
         deleteProject(selectedProject, setSelectedProject, allProjects, setAllProjects, setOpenConfirmWindow)
       } else if (selectedTask) {
-        deleteTask(taskToDelete: selectedTask, allProjects, chosenProject, setAllTasks, setChosenProject, setAllProjects)
+        deleteTask(selectedTask, allProjects, chosenProject, setAllTasks, setChosenProject, setAllProjects)
       }
     } catch (err) {
       console.log(err)
@@ -45,16 +45,18 @@ export default function ConfirmationWindow() {
 
       setSelectedProject(null)
       setSelectedTask(null)
-      toast.success(`${selectedProject ? "project" : "task"} deleted successfully`)
+      toast.success(`${selectedProject ? 'project' : 'task'} deleted successfully`)
     }
   }
 
   useEffect(() => {
     if (selectedProject) {
-      setHeader("Project")
-      setMessage(`Are you sure you want to remove this project? This action cannot be undone, and will remove all projects associated with it.`)
+      setHeader('Project')
+      setMessage(
+        `Are you sure you want to remove this project? This action cannot be undone, and will remove all projects associated with it.`,
+      )
     } else if (selectedTask) {
-      setHeader("Task")
+      setHeader('Task')
       setMessage(`Are you sure you want to remove this project? This action cannot be undone.`)
     }
   }, [openConfirmationWindow, selectedProject, selectedTask])
@@ -67,9 +69,7 @@ export default function ConfirmationWindow() {
     >
       <div className="rounde-lg p-6">
         <h2 className="text-xl font-semibold mb-5">Delete {header}</h2>
-        <p className={`text-gray-600 mb-4 text-sm`}>
-          {message}
-        </p>
+        <p className={`text-gray-600 mb-4 text-sm`}>{message}</p>
 
         <div className="flex justify-end gap-2 mt-10 text-[13px]">
           <button

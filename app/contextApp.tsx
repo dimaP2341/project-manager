@@ -57,7 +57,24 @@ export default function ContextAppProvider({ children }: { children: React.React
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const [openConfirmationWindow, setOpenConfirmWindow] = useState<boolean>(false)
 
-  const [sortingOptions, setSortingOptions] = useState([
+  const [sortingOptionsProject, setSortingOptionsProject] = useState([
+    {
+      category: 'Order',
+      options: [
+        { label: 'A-Z', value: 'asc', selected: true },
+        { label: 'Z-A', value: 'desc', selected: false },
+      ],
+    },
+    {
+      category: 'Date',
+      options: [
+        { label: 'Newest', value: 'newest', selected: false },
+        { label: 'Oldest', value: 'oldest', selected: false },
+      ],
+    },
+  ])
+
+  const [sortingOptionsTask, setSortingOptionsTask] = useState([
     {
       category: 'Order',
       options: [
@@ -154,7 +171,8 @@ export default function ContextAppProvider({ children }: { children: React.React
         openDropDownObject: { openDropDown, setOpenDropDown },
         selectedProjectObject: { selectedProject, setSelectedProject },
         openConfirmationWindowObject: { openConfirmationWindow, setOpenConfirmWindow },
-        sortingOptionObject: { sortingOptions, setSortingOptions },
+        sortingOptionsProjectObject: { sortingOptionsProject, setSortingOptionsProject },
+        sortingOptionsTaskObject: { sortingOptionsTask, setSortingOptionsTask },
         openSortingDropDownObject: { openSortingDropDown, setOpenSortingDropDown },
         sortingDropDownPositionsObject: { sortingDropDownPositions, setSortingDropDownPositions },
         chosenProjectObject: { chosenProject, setChosenProject },

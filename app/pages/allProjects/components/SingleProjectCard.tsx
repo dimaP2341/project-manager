@@ -97,12 +97,12 @@ function ProjectCardBody({ project }: { project: Project }) {
   return (
     <div className="h-[80px] flex flex-col gap-3 mb-1">
       <ul className="text-slate-400 text-[13px] flex flex-col gap-2 ml-3">
-        <li className="flex gap-2 items-center">
+        <li className="flex flex-col gap-2 items-start">
           {project.tasks.slice(0, 3).map((task) => (
-            <li key={task.id} className="flex gap-2 items-center">
+            <div key={task.id} className="flex gap-2 items-center">
               <CircleRounded sx={{ fontSize: '14px' }} />
               <span>{trancateString(task.title, 40)}</span>
-            </li>
+            </div>
           ))}
         </li>
       </ul>

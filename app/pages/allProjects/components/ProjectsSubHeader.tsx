@@ -16,40 +16,48 @@ function MyProjectsText() {
 }
 
 function SortByButton() {
-  const {openSortingDropDownObject: {setOpenSortingDropDown}, sortingDropDownPositionsObject: {setSortingDropDownPositions}, sortingOptionObject: {sortingOptions}} = useContextApp()
+  const {
+    openSortingDropDownObject: { setOpenSortingDropDown },
+    sortingDropDownPositionsObject: { setSortingDropDownPositions },
+    sortingOptionsProjectObject: { sortingOptionsProject },
+  } = useContextApp()
 
   const sortingLinkRef = useRef<HTMLDivElement>(null)
 
-  let sortingLabel = ""
+  let sortingLabel = ''
 
-  const flatten = sortingOptions.flatMap((option) => option.options).find((option) => option.selected)
+  const flatten = sortingOptionsProject.flatMap((option) => option.options).find((option) => option.selected)
+
+  if (flatten) {
+    if (flatten.label === 'A-Z' || flatten.label === 'Z-A') {
+      sortingLabel = `Order ${flatten.label}`
+    } else {
+      sortingLabel = `${flatten.label} Projects`
+    }
+  }
 
   function clickedSortingLink() {
     if (sortingLinkRef.current) {
       const rect = sortingLinkRef.current.getBoundingClientRect()
-      const {top, left, width} = rect
+      const { top, left, width } = rect
       setSortingDropDownPositions({
         top: top + window.screenY + 30,
         left: left + window.screenX,
-        width
+        width,
       })
     }
 
     setOpenSortingDropDown(true)
   }
 
-  if (flatten) {
-    if (flatten.label === "A-Z" || flatten.label === "Z-A") {
-      sortingLabel = `Order ${flatten.label}`
-    } else {
-      sortingLabel = `${flatten.label} Projects`
-    }
-  }
-  
   return (
     <div className="flex text-[15px] max-sm:text-[14px] font-semibold gap-3 max-sm:gap-1">
       <span className="text-slate-300">Sort By</span>
-      <div className="flex gap-1 items-center cursor-pointer text-slate-800 hover:text-orange-600" onClick={clickedSortingLink} ref={sortingLinkRef}>
+      <div
+        className="flex gap-1 items-center cursor-pointer text-slate-800 hover:text-orange-600"
+        onClick={clickedSortingLink}
+        ref={sortingLinkRef}
+      >
         <span className="text-slate-800">Recent Project</span>
         <KeyboardArrowDown className="text-xl" />
       </div>
