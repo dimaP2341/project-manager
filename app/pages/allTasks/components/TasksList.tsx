@@ -164,9 +164,9 @@ function SingleTask({ task }: { task: Task }) {
     <div className="flex gap-1 items-center bg-white rounded-lg border border-slate-100 px-6 max-sm:px-2">
       <Checkbox
         sx={{
-          color: 'orangered',
+          color: 'purple',
           '&.Mui-checked': {
-            color: 'orange',
+            color: 'purple',
           },
         }}
         onClick={updateStatus}
@@ -206,7 +206,7 @@ function SingleTask({ task }: { task: Task }) {
         </div>
 
         <div className="flex gap-2 items-center">
-          <div className="rounded-lg p-2 flex items-center justify-center cursor-pointer bg-orange-200 hover:bg-orange-300 transition-all">
+          <div className="rounded-lg p-2 flex items-center justify-center cursor-pointer bg-royal-blue-200 hover:bg-royal-blue-300 transition-all">
             <EditOutlined sx={{ fontSize: '17px' }} className="text-royal-blue-600" />
           </div>
           <div className="rounded-lg p-2 flex items-center justify-center cursor-pointer bg-slate-200 hover:bg-slate-300">

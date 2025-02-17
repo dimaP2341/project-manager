@@ -51,8 +51,8 @@ function MyProjectsText() {
 
   return (
     <div className="flex items-center gap-3 max-sm:gap-2">
-      <div className="w-[41px] -mt-1 flex justify-center items-center h-[44px] rounded-md bg-orange-100">
-        <SplitscreenOutlined sx={{ fontSize: '21px' }} className="text-orange-600" />
+      <div className="w-[41px] -mt-1 flex justify-center items-center h-[44px] rounded-md bg-royal-blue-100">
+        <SplitscreenOutlined sx={{ fontSize: '21px' }} className="text-royal-blue-600" />
       </div>
       <ul className="flex flex-col gap-[7px] max-sm:gap-[10px]">
         <li className="text-[17px] font-semibold flex gap-2 items-center">
@@ -71,7 +71,7 @@ function MyProjectsText() {
         <div className="flex gap-1 items-center">
           <li className="text-[12px] h-[4px] w-[280px] bg-slate-200 rounded-md overflow-auto max-sm:w-[170px] max-[420px]:w-[130px]">
             <div
-              className="w-1/2 h-[100%] bg-orange-600 rounded-r-xl"
+              className="w-1/2 h-[100%] bg-royal-blue-600 rounded-r-xl"
               style={{ width: `${completionPercentage}%` }}
             ></div>
           </li>
@@ -115,7 +115,7 @@ function SortByButton() {
   return (
     <div
       ref={sortRef}
-      className="flex text-[15px] font-semibold gap-3 max-sm:flex-col max-sm:gap-1 hover:cursor-pointer hover:text-orange-600 text-slate-800"
+      className="flex text-[15px] font-semibold gap-3 max-sm:flex-col max-sm:gap-1 hover:cursor-pointer hover:text-royal-blue-600 text-slate-800"
     >
       <span className="text-slate-300">Sort By</span>
       <div onClick={openTheSortingDropDown} className="flex items-center cursor-pointer">

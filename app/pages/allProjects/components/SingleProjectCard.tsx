@@ -37,8 +37,8 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
       const rect = threeDotsRef.current.getBoundingClientRect()
       const { top, left } = rect
       setDropDownPositions({
-        top: top + window.screenY + 30,
-        left: left + window.screenX,
+        top: top + window.screenY - 45,
+        left: left + window.screenX + 10,
       })
 
       setOpenDropDown(true)
@@ -108,7 +108,7 @@ function ProjectCardBody({ project }: { project: Project }) {
       </ul>
 
       <div className="text-[11px] text-slate-400">
-        {project.tasks.length > 3 && <span className="text-orange-600">+{project.tasks.length - 3}</span>}
+        {project.tasks.length > 3 && <span className="text-royal-blue-600">+{project.tasks.length - 3}</span>}
       </div>
     </div>
   )

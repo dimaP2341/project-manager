@@ -113,6 +113,7 @@ export default function ContextAppProvider({ children }: { children: React.React
   const [allTasks, setAllTasks] = useState<Task[]>([])
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [projectClicked, setProjectClicked] = useState<Project | null>(null)
+  const [closeRightSideBar, setCloseRightSideBar] = useState(false)
 
   useEffect(() => {
     function handleResize() {
@@ -200,6 +201,10 @@ export default function ContextAppProvider({ children }: { children: React.React
         projectClickedObject: {
           projectClicked,
           setProjectClicked,
+        },
+        closeRightSideBarObject: {
+          closeRightSideBar,
+          setCloseRightSideBar,
         },
       }}
     >

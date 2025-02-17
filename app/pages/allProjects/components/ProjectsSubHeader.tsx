@@ -54,7 +54,7 @@ function SortByButton() {
     <div className="flex text-[15px] max-sm:text-[14px] font-semibold gap-3 max-sm:gap-1">
       <span className="text-slate-300">Sort By</span>
       <div
-        className="flex gap-1 items-center cursor-pointer text-slate-800 hover:text-orange-600"
+        className="flex gap-1 items-center cursor-pointer text-slate-800 hover:text-royal-blue-600"
         onClick={clickedSortingLink}
         ref={sortingLinkRef}
       >

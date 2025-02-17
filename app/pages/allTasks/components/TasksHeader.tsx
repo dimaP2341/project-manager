@@ -15,11 +15,10 @@ export default function TasksHeader() {
 function AddProjectButton() {
   return (
     <div className="flex gap-3 items-center">
-      <button className="bg-orange-600 text-white px-2 py-3 text-[14px] rounded-md flex gap-1 items-center">
+      <button className="bg-royal-blue-600 text-white px-2 py-3 text-[14px] rounded-md flex gap-1 items-center">
         <AddOutlined sx={{ fontSize: '22px' }} className="mt-[2px]" />
         <span className="max-sm:hidden pr-2">New Task</span>
       </button>
-      <MenuOutlined className="text-slate-400 h-9 cursor-pointer hidden max-sm:block" />
     </div>
   )
 }

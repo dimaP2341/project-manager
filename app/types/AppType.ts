@@ -148,4 +148,8 @@ export type AppType = {
     projectClicked: Project | null
     setProjectClicked: Dispatch<SetStateAction<Project | null>>
   }
+  closeRightSideBarObject: {
+    closeRightSideBar: boolean
+    setCloseRightSideBar: Dispatch<SetStateAction<boolean>>
+  }
 }

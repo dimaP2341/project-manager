@@ -3,6 +3,7 @@ import { useContextApp } from '@/app/contextApp'
 import SplitscreenOutlined from '@mui/icons-material/SplitscreenOutlined'
 import React, { useMemo } from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 export default function StatsRightSideBar() {
   const {
@@ -35,8 +36,8 @@ export default function StatsRightSideBar() {
   }, [allProjects])
 
   return (
-    <div className="w-[22%] flex justify-end items-center border max-lg:hidden">
-      <div className="h-[92%] w-[94%] bg-white rounded-3xl p-3 mr-3 border flex flex-col">
+    <div className={`w-[22%] flex justify-end items-center border max-lg:hidden`}>
+      <div className="h-[92%] w-[94%] bg-white rounded-3xl p-3 m-3 border flex flex-col">
         <Header />
         <div className="flex flex-col gap-11 items-center justify-center mt-6">
           <CircleChart percentage={completionPercentage} />

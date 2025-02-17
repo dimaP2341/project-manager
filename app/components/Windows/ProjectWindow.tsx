@@ -138,8 +138,8 @@ function Header({ handleClose }: { handleClose: () => void }) {
   return (
     <div className="flex justify-between items-center pt-7 px-7">
       <div className="flex items-center gap-2">
-        <div className="p-[7px] bg-orange-200 rounded-lg flex items-center justify-center">
-          <BorderAllOutlined sx={{ fontSize: '21px' }} className="text-orange-600" />
+        <div className="p-[7px] bg-royal-blue-200 rounded-lg flex items-center justify-center">
+          <BorderAllOutlined sx={{ fontSize: '21px' }} className="text-royal-blue-600" />
         </div>
         <span className="font-semibold text-lg">{selectedProject ? 'Edit Project' : 'New Project'}</span>
       </div>
@@ -182,7 +182,7 @@ function ProjectInput({ register, errors }: { register: UseFormRegister<FormData
           />
           {errors.projectName && <p className="text-[11px] mt-2 text-red-500">{errors.projectName.message}</p>}
         </div>
-        <div className="w-12 h-10 text-white flex items-center justify-center bg-orange-600 rounded-lg cursor-pointer">
+        <div className="w-12 h-10 text-white flex items-center justify-center bg-royal-blue-600 rounded-lg cursor-pointer">
           <LibraryBooksOutlined />
         </div>
       </div>
@@ -211,7 +211,7 @@ function Footer({ handleClose, isLoading }: { handleClose: () => {}; isLoading: 
       </button>
       <button
         type="submit"
-        className="bg-orange-600 hover:bg-orange-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
+        className="bg-royal-blue-600 hover:bg-royal-blue-700 text-white text-[13px] p-2 px-4 rounded-md transition-all"
       >
         {isLoading ? 'Saving...' : selectedProject ? 'Edit Project' : 'Add Project'}
       </button>
