@@ -2,7 +2,6 @@ import SearchBar from '@/app/Components/SearchBar'
 import { useContextApp } from '@/app/contextApp'
 import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
-import SearchOutlined from '@mui/icons-material/SearchOutlined'
 import React from 'react'
 
 export default function ProjectsHeader() {

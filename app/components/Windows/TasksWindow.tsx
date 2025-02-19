@@ -443,10 +443,10 @@ function Header() {
   return (
     <div className="flex justify-between items-center pt-7 px-7">
       <div className="flex items-center gap-2">
-        <div className="p-[7px] bg-orange-200 rounded-lg flex items-center justify-center">
+        <div className="p-[7px] bg-royal-blue-200 rounded-lg flex items-center justify-center">
           <ListAltOutlined
             sx={{ fontSize: '21px' }}
-            className="text-orange-600"
+            className="text-royal-blue-600"
             onClick={() => {
               setOpenTasksWindow(false)
               setProjectClicked(null)

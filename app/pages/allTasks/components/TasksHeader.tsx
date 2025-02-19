@@ -1,6 +1,5 @@
 import SearchBar from '@/app/Components/SearchBar'
 import AddOutlined from '@mui/icons-material/AddOutlined'
-import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import React from 'react'
 
 export default function TasksHeader() {
