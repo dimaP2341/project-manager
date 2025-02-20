@@ -114,6 +114,7 @@ export default function ContextAppProvider({ children }: { children: React.React
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [projectClicked, setProjectClicked] = useState<Project | null>(null)
   const [closeRightSideBar, setCloseRightSideBar] = useState(false)
+  const [filterSearch, setFilterSearch] = useState('')
 
   useEffect(() => {
     function handleResize() {
@@ -205,6 +206,10 @@ export default function ContextAppProvider({ children }: { children: React.React
         closeRightSideBarObject: {
           closeRightSideBar,
           setCloseRightSideBar,
+        },
+        filterSearchObject: {
+          filterSearch,
+          setFilterSearch,
         },
       }}
     >

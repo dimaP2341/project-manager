@@ -152,4 +152,8 @@ export type AppType = {
     closeRightSideBar: boolean
     setCloseRightSideBar: Dispatch<SetStateAction<boolean>>
   }
+  filterSearchObject: {
+    filterSearch: string
+    setFilterSearch: Dispatch<SetStateAction<string>>
+  }
 }
