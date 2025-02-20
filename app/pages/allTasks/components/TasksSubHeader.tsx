@@ -44,7 +44,7 @@ function MyProjectsText() {
     if (projectTitleRef.current) {
       const rect = projectTitleRef.current.getBoundingClientRect()
       const { top, left, width } = rect
-      setProjectsDropDownPositions({ left, top, width })
+      setProjectsDropDownPositions({ left, top: top + 40, width: width + 80 })
     }
     setOpenProjectsDropDown(!openProjectsDropDown)
   }
