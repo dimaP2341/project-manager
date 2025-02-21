@@ -6,7 +6,7 @@ export default function ProjectsListComponent() {
     updateAllProjectsObject: { updatedAllProjects, setUpdatedAllProjects },
   } = useTaskFormContext()
   return (
-    <div className="flex flex-col bg-red-300 gap-3">
+    <div className="flex flex-col gap-3">
       {updatedAllProjects.map((singleProject, index) => (
         <SingleProject key={index} singlePorject={singleProject} index={index} />
       ))}
@@ -35,7 +35,7 @@ function SingleProject({ singleProject, index }: { singleProject: ProjectWithSel
       className={`${singleProject.isSelected && 'bg-royal-blue-50 border border-royal-blue-200'} flex items-center gap-2 p-[7px] rounded-md cursor-pointer`}
     >
       <div className={`flex gap-2 items-center`}>
-        {/* <div>{getIconComponent(singleProject.icon, 'text-royal-blue-600', '22px')} </div> */}
+        <div>{getIconComponent(singleProject.icon, 'text-royal-blue-600', '22px')} </div>
         <span className="mt-[3px] hover:text-royal-blue-600 text-slate-500">{singleProject.title}</span>
       </div>
     </div>

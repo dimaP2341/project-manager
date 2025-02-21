@@ -12,13 +12,17 @@ import { Checkbox } from '@mui/material'
 export default function TasksList() {
   const {
     chosenProjectObject: { chosenProject },
-    allProjectsObject: { allProjects },
     tabsOptionsObject: { tabsOptions },
     allTasksObject: { allTasks, setAllTasks },
+    filterSearchObject: { filterSearch },
   } = useContextApp()
 
   const filteredTasks = useMemo(() => {
     let tasks = allTasks
+
+    if (filterSearch) {
+      tasks = tasks.filter((task) => task.title.toLowerCase().includes(filterSearch.toLowerCase()))
+    }
 
     if (chosenProject) {
       tasks = tasks.filter((task) => task.projectName === chosenProject.title)
@@ -31,7 +35,7 @@ export default function TasksList() {
     }
 
     return tasks
-  }, [allTasks, chosenProject, tabsOptions, allTasks])
+  }, [allTasks, chosenProject, tabsOptions, allTasks, filterSearch])
 
   return (
     <div className="ml-12 mt-11 flex flex-col gap-4 max-sm:ml-0">

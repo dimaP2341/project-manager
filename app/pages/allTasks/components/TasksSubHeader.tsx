@@ -44,7 +44,7 @@ function MyProjectsText() {
     if (projectTitleRef.current) {
       const rect = projectTitleRef.current.getBoundingClientRect()
       const { top, left, width } = rect
-      setProjectsDropDownPositions({ left, top: top + 40, width: width + 80 })
+      setProjectsDropDownPositions({ left, top: top + 40, width: width + 50 })
     }
     setOpenProjectsDropDown(!openProjectsDropDown)
   }
@@ -66,7 +66,11 @@ function MyProjectsText() {
               {totalTasks}
             </span>
           </div>
-          <KeyboardArrowDownOutlined className="text-slate-600 text-lg" />
+          {openProjectsDropDown ? (
+            <KeyboardArrowUpOutlined className="text-slate-600 text-lg" />
+          ) : (
+            <KeyboardArrowDownOutlined className="text-slate-600 text-lg" />
+          )}
         </li>
         <div className="flex gap-1 items-center">
           <li className="text-[12px] h-[4px] w-[280px] bg-slate-200 rounded-md overflow-auto max-sm:w-[170px] max-[420px]:w-[130px]">

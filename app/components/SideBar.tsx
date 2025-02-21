@@ -85,6 +85,7 @@ function Menu() {
   const {
     openSideBarObject: { openSideBar },
     sideBarMenuObject: { sideBarMenu, setSideBarMenu },
+    filterSearchObject: { setFilterSearch },
   } = useContextApp()
 
   const iconMap: Record<string, ComponentType<SvgIconProps>> = {
@@ -101,6 +102,7 @@ function Menu() {
       return { ...item, isSelected: false }
     })
     setSideBarMenu(updateMenuSideBar)
+    setFilterSearch('')
   }
   console.log(sideBarMenu)
   return (

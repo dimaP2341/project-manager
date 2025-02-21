@@ -1,6 +1,6 @@
 import SearchBar from '@/app/Components/SearchBar'
 import { useContextApp } from '@/app/contextApp'
-import AddCircleOutline from '@mui/icons-material/AddCircleOutline'
+import AddOutlined from '@mui/icons-material/AddOutlined'
 import MenuOutlined from '@mui/icons-material/MenuOutlined'
 import React from 'react'
 
@@ -20,7 +20,7 @@ function AddProjectButton() {
   return (
     <div className="flex gap-3 items-center">
       <button className="bg-royal-blue-600 text-white pr-3 text-[14px] rounded-md flex gap-1 items-center p-2 max-sm:pr-2">
-        <AddCircleOutline className="mt-[2px] text-xl" />
+        <AddOutlined sx={{ fontSize: '22px' }} className="mt-[2px]" />
         <span className="max-sm:hidden">New Project</span>
       </button>
       <MenuOutlined
