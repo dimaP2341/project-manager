@@ -41,8 +41,8 @@ export default function TasksList() {
     <div className="ml-12 mt-11 flex flex-col gap-4 max-sm:ml-0">
       <Tabs />
       <div className="flex flex-col gap-4">
-        {filteredTasks.map((singleTask, index) => (
-          <SingleTask key={index} task={singleTask} />
+        {filteredTasks.map((singleTask) => (
+          <SingleTask key={singleTask.id} task={singleTask} />
         ))}
       </div>
     </div>
@@ -135,7 +135,7 @@ function SingleTask({ task }: { task: Task }) {
   }, [task])
 
   function updateStatus() {
-    const newStatus = checked ? 'In Progress' : 'Completed'
+    const newStatus = task.status === 'Completed' ? 'In progress' : 'Completed'
 
     const updatedProjects: Project[] = allProjects.map((project) => ({
       ...project,
@@ -173,7 +173,7 @@ function SingleTask({ task }: { task: Task }) {
             color: 'purple',
           },
         }}
-        onClick={updateStatus}
+        onChange={updateStatus}
         checked={checked}
       />
       <div className="w-full flex gap-3 items-center justify-between p-5 py-6 max-sm:p-4">
