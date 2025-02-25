@@ -16,9 +16,10 @@ export default function ProjectsHeader() {
 function AddProjectButton() {
   const {
     closeRightSideBarObject: { setCloseRightSideBar },
+    openProjectWindowObject: { setOpenProjectWindow },
   } = useContextApp()
   return (
-    <div className="flex gap-3 items-center">
+    <div className="flex gap-3 items-center" onClick={() => setOpenProjectWindow(true)}>
       <button className="bg-royal-blue-600 text-white pr-3 text-[14px] rounded-md flex gap-1 items-center p-2 max-sm:pr-2">
         <AddOutlined sx={{ fontSize: '22px' }} className="mt-[2px]" />
         <span className="max-sm:hidden">New Project</span>

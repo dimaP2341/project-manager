@@ -2,12 +2,11 @@ import { useContextApp } from '@/app/contextApp'
 import { allIconsArray } from '@/app/Data/AllIcons'
 import { Project } from '@/app/Data/AllProjects'
 import { addNewProject, editProject } from '@/app/Functions/projectsActions'
-import AllProjects from '@/app/pages/allProjects/AllProjects'
 import { zodResolver } from '@hookform/resolvers/zod'
 import BorderAllOutlined from '@mui/icons-material/BorderAllOutlined'
 import CloseOutlined from '@mui/icons-material/CloseOutlined'
 import LibraryBooksOutlined from '@mui/icons-material/LibraryBooksOutlined'
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { FieldErrors, SubmitHandler, UseFormRegister, useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
@@ -31,6 +30,7 @@ export default function ProjectWindow() {
   } = useContextApp()
 
   const [isLoading, setIsLoading] = useState(false)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   const {
     register,
@@ -59,7 +59,7 @@ export default function ProjectWindow() {
       return
     }
 
-    await projectsFunction()
+    await projectsFunction(data)
   }
 
   async function projectsFunction(data: FormData) {
@@ -96,7 +96,7 @@ export default function ProjectWindow() {
   }
 
   const handleClose = () => {
-    console.log('Closing window and resetting form')
+    setOpenProjectWindow(false)
     reset()
   }
 
@@ -115,8 +115,21 @@ export default function ProjectWindow() {
     }
   }, [openProjectWindow, reset, selectedProject, setSelectedIcon, setValue])
 
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpenProjectWindow(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  })
+
   return (
     <div
+      ref={wrapperRef}
       className={`${
         openProjectWindow ? 'block' : 'hidden'
       } w-[48%] max-sm:w-[82%] max-[600px]:w-[93%] z-[80] p-3 left-1/2 top-[47%] -translate-y-1/2 -translate-x-1/2 absolute flex flex-col gap-3 border border-slate-50 bg-white rounded-lg shadow-md`}

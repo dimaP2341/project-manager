@@ -6,7 +6,6 @@ import DeleteOutlineOutlined from '@mui/icons-material/DeleteOutlineOutlined'
 import EditOutlined from '@mui/icons-material/EditOutlined'
 import ListOutlined from '@mui/icons-material/ListOutlined'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
-import AllProjects from '../../allProjects/AllProjects'
 import { Checkbox } from '@mui/material'
 
 export default function TasksList() {
