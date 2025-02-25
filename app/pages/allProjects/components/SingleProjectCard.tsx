@@ -7,6 +7,7 @@ import React, { useRef } from 'react'
 
 export default function SingleProjectCard({ project }: { project: Project }) {
   const daysLeft = calculateDaysLeft(project.createdAt)
+  console.log(daysLeft)
   const progressPercentage = calculateProgressPercentage(
     project.tasks.length,
     project.tasks.filter((task) => task.status === 'Completed').length,
@@ -14,7 +15,7 @@ export default function SingleProjectCard({ project }: { project: Project }) {
 
   return (
     <li className="w-[350px] max-md:w-[96%] h-[306px] flex flex-col gap-8 border rounded-lg p-7 bg-white">
-      <ProjectCardHeader project={project} dayLeft={daysLeft} />
+      <ProjectCardHeader project={project} daysLeft={daysLeft} />
       <ProjectCardBody project={project} />
       <ProjectCardFooter progressPercentage={progressPercentage} />
     </li>
@@ -29,6 +30,8 @@ function ProjectCardHeader({ project, daysLeft }: { project: Project; daysLeft: 
     selectedProjectObject: { setSelectedProject },
     sideBarMenuObject: { setSideBarMenu },
   } = useContextApp()
+
+  console.log(daysLeft)
 
   function openDropDown(e: MouseEvent) {
     e.preventDefault()
